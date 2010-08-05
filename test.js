@@ -2,9 +2,15 @@ require("./nTPL");
 require("./nTPL.block");
 require("./nTPL.filter");
 
-var base = nTPL("./base.html",[],"base");
-var home = nTPL("./index.html",[],"index");
-
+var base = nTPL({
+		template: "./base.html",
+		name: "base"
+	});
+var home = nTPL({
+		template: "./index.html",
+		name: "home"
+	});
+	
 var http = require('http');
 
 http.createServer(function (req, res) {

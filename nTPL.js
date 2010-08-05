@@ -46,7 +46,7 @@ nTPL = (function($,undefined) {
 					
 						name = str.match($modificator);
 						
-						return "$p(jsTPL('" + name[1] + "')(" + str.substr(name[0].length) + "),$_);";
+						return "$p(nTPL('" + name[1] + "')(" + str.substr(name[0].length) + "),$_);";
 					},
 					
 					// "if", "else", "elseif"
@@ -65,7 +65,7 @@ nTPL = (function($,undefined) {
 					// Short-hand for each method
 					// Example: {%each arr%}<div>{%=this%}</div>{%/each%}
 					/** @return {string} */
-					"each": preg_decorate("jsTPL.each(%1,function($i){"),
+					"each": preg_decorate("nTPL.each(%1,function($i){"),
 					/** @return {string} */
 					"/each": return_decorate("});"),
 					
@@ -153,7 +153,21 @@ nTPL = (function($,undefined) {
 			return fs.readFileSync(filename).toString();
 			
 		}
-		
+		$ = function (options) {
+			var
+				_template = options.template,
+				_args = options.args,
+				_name = options.name;
+			
+			if (typeof options !== "object")
+				return $main.apply(this, arguments);
+			
+			if (_name && !_template && !_args)
+				return $main(_name);
+			
+			if (_template)
+				return $main(_template, _args || [], _name);						
+		}
 		/**
 		* Generate, cache, return template
 		* $.template("name") - get cached template with name
@@ -162,7 +176,7 @@ nTPL = (function($,undefined) {
 		* @param {string} str Input template, or template name
 		* @return {function(object): object}
 		*/
-		$ = function (str , args, name) {
+		function $main(str , args, name) {
 			// If have been cached by name
 			// $.template("name")
 			
