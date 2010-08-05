@@ -27,7 +27,6 @@
 	* @param{object} argums argument that will be passed to template with block values
 	*/
 	function $extends($_ , $p, gid , name , argums) {
-	
 		// Store template into internal storage
 		data[gid][ext] = $(name);
 		
@@ -148,7 +147,7 @@
 	
 	// Add modificators
 	$.modificators["extends"] = function (str , namespace) {
-			
+		
 		return "$scope.$extends($_,$p," + align(namespace) +	"," + str + ");";			
 		
 	};

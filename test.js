@@ -2,8 +2,8 @@ require("./nTPL");
 require("./nTPL.block");
 require("./nTPL.filter");
 
-var base = nTPL("./base.html","base");
-var home = nTPL("./index.html","index");
+var base = nTPL("./base.html",[],"base");
+var home = nTPL("./index.html",[],"index");
 
 var http = require('http');
 

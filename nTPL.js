@@ -299,7 +299,7 @@ nTPL = (function($,undefined) {
 					
 					return result;
 					
-				}
+				}				
 				
 				refreshTemplate[name] = function(obj) {
 					i = obj.i;
