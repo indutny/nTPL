@@ -243,7 +243,7 @@ this.nTPL = nTPL = (function($,undefined) {
 			// If have been cached by name
 			// $.template("name")
 			
-			var $arguments = arguments, arglen = $arguments.length, 
+			var arglen = arguments.length, 
 				// Args converted to string
 				// Need them for caching
 				cache_name,
