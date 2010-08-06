@@ -119,7 +119,7 @@
 	function init(gid, namespace) {
 		data [gid] = {};
 		data [gid][args] = {};
-		data [gid][namespace]=namespace || data[gid][namespace];
+		data [gid][namespace] = namespace || data[gid][namespace];
 		data [gid][flag] = 0;
 	}
 	
