@@ -16,17 +16,7 @@
 *		Also nTPL.modificators are available
 *		See nTPL.block and nTPL.filter for examples of usage
 */
-this.nTPL = nTPL = (function($,undefined) {
-	
-	/** Escaping closure
-	 * Only global variables will be available here
-	 * @param{string} a Code to evaluate
-	 * @param{string} b Variable to store output
-	 * @return {Function}
-	 */
-	function $eval() {
-		return eval(arguments[0]);
-	}
+this.nTPL = nTPL = (function($,undefined) {	
  
     (function ($tab , gid ,
 	           cache , refreshTemplate,
@@ -72,7 +62,7 @@ this.nTPL = nTPL = (function($,undefined) {
 					// Short-hand for each method
 					// Example: {%each arr%}<div>{%=this%}</div>{%/each%}
 					/** @return {string} */
-					"each": preg_decorate("$.each(%1,function($i){"),
+					"each": preg_decorate("nTPL.each(%1,function($i){"),
 					/** @return {string} */
 					"/each": return_decorate("});"),
 					
@@ -117,16 +107,16 @@ this.nTPL = nTPL = (function($,undefined) {
 		* And refresh template
 		*
 		*	@param {string} filename Filename
-		*	@param {function(string,object): object} process Process function
+		*	@param {function(string,object): object} parse parse function
 		*	@return {boolean}
 		*/
-		function watchChanges(filename, process) {
+		function watchChanges(filename, parse) {
 			
 			// Should be set watch flag in options
-			if (!process[WATCH])
+			if (!parse[WATCH])
 				return;
 				
-			var name = process[NAME], refreshFunc;
+			var name = parse[NAME], refreshFunc;
 			
 			// Template can be refreshed only if you have specified name
 			if (name) {					
@@ -142,7 +132,7 @@ this.nTPL = nTPL = (function($,undefined) {
 						// check this out
 						if (refreshFunc = refreshFunc || refreshTemplate[name]) {
 							
-							refreshFunc(process.call(REF_CHECK, data.toString()));
+							refreshFunc(parse.call(REF_CHECK, data.toString()));
 						}
 					});
 					
@@ -155,11 +145,11 @@ this.nTPL = nTPL = (function($,undefined) {
 		* and watch changes of file
 		*
 		*	@param {string} filename Template name
-		*	@param {function(string,object): object} process Process function
+		*	@param {function(string,object): object} parse parse function
 		*	@param {function(string): boolean} callback Callback
 		*	@return {string}
 		*/
-		function readTemplateAsync(filename, process, callback) {
+		function readTemplateAsync(filename, parse, callback) {
 		
 			// Check if file exists in async mode
 			path.exists(filename, function(exists) {
@@ -179,7 +169,7 @@ this.nTPL = nTPL = (function($,undefined) {
 				});
 				
 				// Watch for file changes
-				watchChanges(filename, process);
+				watchChanges(filename, parse);
 			});
 			// No file - fire callback
 			callback(filename);
@@ -190,10 +180,10 @@ this.nTPL = nTPL = (function($,undefined) {
 		* and watch changes of file
 		*
 		*	@param {string} filename Template name
-		*	@param {function(string,object): object} process Process function
+		*	@param {function(string,object): object} parse parse function
 		*	@return {string}
 		*/
-		function readTemplateSync(filename, process) {
+		function readTemplateSync(filename, parse) {
 			// If there is no file
 			// "filename" isn't really filename, but template
 			// So return it
@@ -204,14 +194,14 @@ this.nTPL = nTPL = (function($,undefined) {
 			var template = fs.readFileSync(filename).toString();
 			
 			// Watch for file changes
-			watchChanges(filename, process);
+			watchChanges(filename, parse);
 						
 			
 			return template;
 			
 		}
 		/**
-		* Parse input
+		* Process input
 		*   As object or as normal arguments
 		*   Object must be 
 		*
@@ -269,26 +259,26 @@ this.nTPL = nTPL = (function($,undefined) {
 				return namecache[name] = i;
 			
 			// Store template name
-			process[NAME] = name;
-			process[WATCH] = watch;
+			parse[NAME] = name;
+			parse[WATCH] = watch;
 			
 			// If we don't have callback
 			if (!callback) {			
 				// Do all work in sync
-				return process(readTemplateSync(str, process));
+				return parse(readTemplateSync(str, parse));
 			} else {
 				// Do all work in async
-				readTemplateAsync(str, process, function (data) {					
-					process(data, callback);
+				readTemplateAsync(str, parse, function (data) {					
+					parse(data, callback);
 				});
 			}
 			/**
-			* Processing input template with options
+			* parseing input template with options
 			* @param {string} str Input template
-			* @param {object} options Processing options
+			* @param {object} options parseing options
 			* @return {function(object): object}
 			*/
-			function process(str, callback) {			
+			function parse(str, callback) {			
 				
 				var	compiled,
 					namespace = {
@@ -357,7 +347,7 @@ this.nTPL = nTPL = (function($,undefined) {
 					// Because we don't want server termination using try
 					try {
 
-						i = $eval("(function($scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})");						
+						i = process.compile("(function(nTPL,$scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})", "nTPL.js");
 						
 					} catch (e) {
 						
@@ -399,7 +389,7 @@ this.nTPL = nTPL = (function($,undefined) {
 					*
 					* $p is pushing function, declared here to have access to $r variable
 					*/
-					result = [ namespace, callArgs , function (a,$_) {
+					result = [ $, namespace, callArgs , function (a,$_) {
 						
 						// Push string or object into global output stack
 						return $_[$_.length] = a;					
