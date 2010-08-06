@@ -1,26 +1,15 @@
+var assert = require("assert");
+
 require ("./nTPL");
 require ("./nTPL.block");
 
-var tNum = 0;
-var errNum = 0;
-
-function assertEqual(a,b) {
-	
-	if (a != b) {
-		errNum++;
-		console.log( "test #" + tNum + " failed");
-		console.log( "Expected :" + b);
-		console.log( "Got :" + a);
-	}
-	tNum++;
-}
 
 // #1
 var a = nTPL({
 	template: "123"
 })({a: 1});
 
-assertEqual(a, "123");
+assert.equal(a, "123");
 
 // #2
 var a = nTPL({
@@ -28,7 +17,7 @@ var a = nTPL({
 	args: ["a"]
 })({a: 1});
 
-assertEqual(a, "1");
+assert.equal(a, "1");
 
 // #2
 var a = nTPL({
@@ -36,7 +25,7 @@ var a = nTPL({
 	args: ["a"]
 })({a: [1,3,5] });
 
-assertEqual(a, "135");
+assert.equal(a, "135");
 
 // #3
 var a = nTPL({
@@ -44,7 +33,7 @@ var a = nTPL({
 	args: ["a"]
 })({a: true });
 
-assertEqual(a, "135");
+assert.equal(a, "135");
 
 // #4
 var a = nTPL({
@@ -52,12 +41,12 @@ var a = nTPL({
 	args: ["a"]
 })({a: false });
 
-assertEqual(a, "89");
+assert.equal(a, "89");
 
 // #5
 var a = nTPL("{%catch var a %}What's up, dude?{%/catch%}{%= a.substr(0,9) %}?")();
 
-assertEqual(a, "What's up?");
+assert.equal(a, "What's up?");
 
 // #6
 nTPL({
@@ -67,7 +56,7 @@ nTPL({
 });
 var a = nTPL("b")({value:'Hello world!'});
 
-assertEqual(a, "<b>Hello world!</b>");
+assert.equal(a, "<b>Hello world!</b>");
 
 // #7
 
@@ -78,7 +67,4 @@ nTPL({
 });
 var a = nTPL("{%extends 'block-test'%}{%block 'username'%}Admin{%/block%}")();
 
-assertEqual(a, "Hello, Admin!");
-
-
-console.log("Errors: " + errNum + ", Total: " + tNum);
+assert.equal(a, "Hello, Admin!");
