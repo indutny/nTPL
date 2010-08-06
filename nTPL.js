@@ -301,56 +301,64 @@ this.nTPL = nTPL = (function($,undefined) {
 					// Index
 					i,					
 					// Var count
-					varcount = 0;							
+					varcount = 0,
+					// Has code inside
+					hasCode;
 						
 				// Add $_ to scope
 				// And check that args is array
 				( args instanceof Array) ? (args[ args.length ] = "$_") : (args = ["$_"]);
 				
-				// Preprocess template				
-				// Go through each row
-				// And replace it with code
-				compiled = str ?
-					str
-						.replace($tabs , " ")
-							.replace($brackets , $tab)
-								.split($tab).map(
-					function ( elem, i, varname) {
-				
-						if (i%2) {
-							// Code
-						
-							// If there is modificator
-							( (i = elem.match($modificator)) && ( i.f = modificators[ i[1] ]) ) &&
-								// Use it to translate elem
-								(
-									elem = i.f(elem.substr(i[0].length), namespace)
-								);
+				// If template is not plain (with {% or %} inside) - generate function
+				if (hasCode = str.match($brackets)) {
+					// Preprocess template				
+					// Go through each row
+					// And replace it with code
+					compiled = str ?
+						str
+							.replace($tabs , " ")
+								.replace($brackets , $tab)
+									.split($tab).map(
+						function ( elem, i, varname) {
+					
+							if (i%2) {
+								// Code
 							
-								return elem;
-						}
-						
-						// Text
-						if (!elem)
-							return "";
-											
-						// Push text into namespace as $(var number)
-						varname = "$" + varcount;					
-						args.push(varname);					
-						namespace[ varname ] = elem;
-						
-						// So, instead of inline printing we will print variable
-						return "$p($" + ( varcount++ ) + ",$_);";				
-						
+								// If there is modificator
+								( (i = elem.match($modificator)) && ( i.f = modificators[ i[1] ]) ) &&
+									// Use it to translate elem
+									(
+										elem = i.f(elem.substr(i[0].length), namespace)
+									);
 								
-					}
-				// Then join all rows
-				).join("") : "";
-				
-		
-				// Create function with overdriven args
-				// In secure closure
-				i = $eval("(function($scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})");						
+									return elem;
+							}
+							
+							// Text
+							if (!elem)
+								return "";
+												
+							// Push text into namespace as $(var number)
+							varname = "$" + varcount;					
+							args.push(varname);					
+							namespace[ varname ] = elem;
+							
+							// So, instead of inline printing we will print variable
+							return "$p($" + ( varcount++ ) + ",$_);";				
+							
+									
+						}
+					// Then join all rows
+					).join("") : "";
+					
+			
+					// Create function with overdriven args
+					// In secure closure
+					i = $eval("(function($scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})");						
+				} else {
+					// Else function can return template itself
+					i = function(){ return str };
+				}
 				
 				// Because REF_CHECK is internal scoped variable
 				// We can use it to check operations
@@ -391,16 +399,26 @@ this.nTPL = nTPL = (function($,undefined) {
 					
 				}				
 				
-				refreshTemplate[name] = function(obj) {
-					i = obj.i;
-					namespace = obj.namespace;
-				};
+				
+				// This function will refresh template
+				// If file is reloaded (see watch option)
+				refreshTemplate[name] = hasCode ? 
+					function(obj) {
+						i = obj.i;
+						namespace = obj.namespace;
+					}
+					:
+					function (obj) {
+						str = obj.i();
+					};
+					
 				/**
 				*	And cache it wrapper, that will recreate scope and call original function
+				*	If plain - no need in wrapper
 				*	@param {object} args arguments to pass
 				*	@return {string}
 				*/
-				local = cache[cache_name] = function (callArgs) {
+				local = cache[cache_name] = hasCode ? function (callArgs) {
 					// Args can be null
 					callArgs = callArgs || {};
 			
@@ -412,7 +430,7 @@ this.nTPL = nTPL = (function($,undefined) {
 					
 					// Return result of execution				
 					return i.apply(undefined , createArguments( callArgs ));
-				}			
+				} : i ;
 				
 				// If name is defined
 				name &&
@@ -454,4 +472,4 @@ this.nTPL = nTPL = (function($,undefined) {
 	
 	
 	return $;
-})();/**@preserve nTPL v.0.0.1;Copyright 2010, Fedor Indutny;Released under MIT license;Parts of code derived from jQuery JavaScript Library;Copyright (c) 2009 John Resig **/
+})();/**@preserve nTPL v.0.0.2;Copyright 2010, Fedor Indutny;Released under MIT license;Parts of code derived from jQuery JavaScript Library;Copyright (c) 2009 John Resig **/
