@@ -349,7 +349,7 @@ this.nTPL = nTPL = (function($,undefined) {
 		
 				// Create function with overdriven args
 				// In secure closure
-				i = $eval("b=function($scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')}");						
+				i = $eval("(function($scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})");						
 				
 				// Because REF_CHECK is internal scoped variable
 				// We can use it to check operations
