@@ -68,3 +68,11 @@ nTPL({
 var a = nTPL("{%extends 'block-test'%}{%block 'username'%}Admin{%/block%}")();
 
 assert.equal(a, "Hello, Admin!");
+
+// #8
+
+var a = nTPL({
+	template: "{%= a %}-{%= b %}-{%= c %}",
+	args: ["a","b","c"],
+})({a: "a", b: "b", c:"c"});
+assert.equal(a, "a-b-c");

@@ -285,7 +285,7 @@ this.nTPL = nTPL = (function($,undefined) {
 						// Storage for replacements
 						$r	:	[],
 						// Global template Id, may be used by plugins
-						$gid: gid++
+						$gid: gid+=1
 					},
 					local,
 					// Index
@@ -330,10 +330,10 @@ this.nTPL = nTPL = (function($,undefined) {
 																
 											// Push text into namespace as $(var number)
 											
-											namespace[ args[args.length] = ("$" + varcount) ] = elem;
+											namespace[ args[args.length] = ("$" + (varcount+=1)) ] = elem;
 											
 											// So, instead of inline printing we will print variable
-											return "$p($" + ( varcount++ ) + ",$_);";				
+											return "$p($" + ( varcount ) + ",$_);";				
 											
 										
 										}
@@ -458,7 +458,7 @@ this.nTPL = nTPL = (function($,undefined) {
 					if ( callback.call( context || object[ name ], name, object[ name ] ) === false ) { break; }
 				}
 			} else {
-				for ( var value = object[0]; i < length && callback.call( context || value, i, value ) !== false; value = object[++i] ){}
+				for ( var value = object[0]; i < length && callback.call( context || value, i, value ) !== false; value = object[i+=1] ){}
 			}
 			return object;
 		}
