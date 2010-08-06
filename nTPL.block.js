@@ -1,7 +1,7 @@
 /**
 * @param{array} data internal storage with gid as key
 */
-(function ($ , data ,  blockStack , undefined) {
+(function ($ , data ,  undefined) {
 	
 	/** @const */
 	var ext = "e";
@@ -41,7 +41,7 @@
 			$_ = [];
 			
 			// Add block values if we have them
-			argums[blockStack] = data[gid][args];			
+			argums.$blockStack = data[gid][args];			
 			
 			// Call cached template with arguments
 			// And store output into $_ (it will be jQuery object)
@@ -100,7 +100,7 @@
 		
 		// Wow, some template want to pass us some arguments
 		// Really?				
-		if ( (flag = $args[blockStack]) && flag[name] )		
+		if ( (flag = $args.$blockStack) && flag[name] )		
 			// Get first value and slice array
 			(cache = (code = flag[name])[0]) && (code.length>1) && (flag[name] = code.slice(1));
 		else
@@ -167,4 +167,4 @@
 	};
 	
 	// Pass some constants
-})(nTPL,{},"$blockStack");/**@preserve nTPL block plugin v.0.0.1;Copyright 2010, Fedor Indutny;Released under MIT license **/
+})(nTPL, {});/**@preserve nTPL block plugin v.0.0.1;Copyright 2010, Fedor Indutny;Released under MIT license **/
