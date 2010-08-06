@@ -1,6 +1,6 @@
 /**
 *	Usage:
-*		require("./nTPL.js");
+*		require("./nTPL");
 *		nTPL({
 *			template: filename or inline template (@string),
 *			name: template name (template will be accessible with this name) (@string),
@@ -16,7 +16,7 @@
 *		Also nTPL.modificators are available
 *		See nTPL.block and nTPL.filter for examples of usage
 */
-nTPL = (function($,undefined) {
+this.nTPL = nTPL = (function($,undefined) {
 	/** @const */
 	var WATCH = "w";
 	
@@ -32,8 +32,8 @@ nTPL = (function($,undefined) {
 	 * @param{string} b Variable to store output
 	 * @return {Function}
 	 */
-	function $eval(a,b) {
-		return eval(a);
+	function $eval() {
+		return eval(arguments[0]);
 	}
  
     (function ($tab , gid ,
@@ -441,7 +441,7 @@ nTPL = (function($,undefined) {
 			return object;
 		}
 		
-		// Add modificators to $.template
+		// Add modificators to nTPL
 		$.modificators = modificators;
 				
 		// Constants and cache

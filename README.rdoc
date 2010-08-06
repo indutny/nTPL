@@ -1,0 +1,73 @@
+==nTPL project: simple, fast and powerfull templates for node.js (http://github.com/donnerjack13589/nTPL).
+It's easy to learn - start now!
+
+==Basic examples:
+	
+	nTPL("1 + 1 = {%= 1+1 %}")();
+	nTPL({
+		template : "1 + 1 = {%= 1+1 %}"
+	})();
+	nTPL("filename.tpl")();
+	// 1 + 1 = 2
+	
+	nTPL({
+		template : "Hello {%= a %}!",
+		args: ["a"]
+	})({a: 'World'});
+	// >> Hello World!
+	
+	nTPL({
+		template: "Hello {%each a%}{%= this %}, {%/each%}world!",
+		args: ["a"]
+	})({a: ['Andy','Alex']});
+	// >>  Hello Andy, Alex, World!
+	
+	nTPL({
+		template: "{%if godmode%}My Lord!{%else%}Who are you?{%/if%}",
+		args: ["godmode"]
+	})({godmode: true});
+	// >> My Lord!
+	
+==Medium examples:
+
+	nTPL("{%catch var a %}What's up, dude?{%/catch%}{%= a.substr(0,9) %}?")();
+	// >> What's up?
+	
+	nTPL({
+		template: "filename.tpl",
+		callback: function (tpl) {
+			console.log(tpl());
+		}
+	});
+	// Will load "filename.tpl" in async mode
+	
+==Harder examples:
+		
+	nTPL({
+		template: "<button>{%= value%}</button>",
+		args: ["value"],
+		name: "input"
+	});
+	nTPL("input")({value:'Hello world!'});
+	// >> Button with text "Hello world!"
+	
+	nTPL({
+		template: "filename.tpl",
+		callback: function (tpl) {
+			console.log(tpl());
+		},
+		watch: true
+	});
+	// Will load "filename.tpl" in async mode
+	// And watch for file changes (template will be refreshed)
+	// P.S. Also available in a sync mode
+		
+==Block module
+
+	nTPL({
+		template: "Hello, {%block 'username'%}{%/block%}!",
+		args: [],
+		name: "block-test"
+	});
+	nTPL("{%extends 'block-test'%}{%block 'username'%}Admin{%/block%}")();
+	// >> Hello, Admin!
