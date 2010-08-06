@@ -6,10 +6,12 @@ var base = nTPL({
 		template: "./base.html",
 		name: "base"
 	});
+	
 var home = nTPL({
-		template: "./index.html",
-		name: "home"
-	});
+	template: "./index.html",
+	name: "home",
+	watch: true	
+});
 	
 var http = require('http');
 

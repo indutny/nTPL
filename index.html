@@ -1,3 +1,8 @@
 {%extends 'base' %}
 {%block 'title' %}hello{%/block %}
-{%block 'content' %}This page was printed with nTPL{%/block %}
+{%block 'content' %}
+
+	{%each ["Hello ", "," , "Dolly!"] %}
+		{%= this %}
+	{%/each %}
+{%/block %}

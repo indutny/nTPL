@@ -1,7 +1,31 @@
+/**
+*	Usage:
+*		require("./nTPL.js");
+*		nTPL({
+*			template: filename or inline template (@string),
+*			name: template name (template will be accessible with this name) (@string),
+*			args: arguments list (@array),
+*			watch: Should reload template if file changed (@boolean),
+*			callback: If callback provided - all things will be done in async mode,
+					  and callback will be fired (@function(template function) )
+*		});
+*
+*		nTPL(...) will generate(or return previously generated) template function,
+*		that returns string value
+*
+*		Also nTPL.modificators are available
+*		See nTPL.block and nTPL.filter for examples of usage
+*/
 nTPL = (function($,undefined) {
 	/** @const */
-	var REFRESH = "r";
-
+	var WATCH = "w";
+	
+	/** @const */
+	var NAME = "n";
+	
+	/** @const */
+	var REF_CHECK = {};
+	
 	/** Escaping closure
 	 * Only global variables will be available here
 	 * @param{string} a Code to evaluate
@@ -47,7 +71,7 @@ nTPL = (function($,undefined) {
 					// Short-hand for each method
 					// Example: {%each arr%}<div>{%=this%}</div>{%/each%}
 					/** @return {string} */
-					"each": preg_decorate("nTPL.each(%1,function($i){"),
+					"each": preg_decorate("$.each(%1,function($i){"),
 					/** @return {string} */
 					"/each": return_decorate("});"),
 					
@@ -96,19 +120,28 @@ nTPL = (function($,undefined) {
 		*	@return {boolean}
 		*/
 		function watchChanges(filename, process) {
-			var name = process._name, refreshFunc;
 			
+			// Should be set watch flag in options
+			if (!process[WATCH])
+				return;
+				
+			var name = process[NAME], refreshFunc;
+			
+			// Template can be refreshed only if you have specified name
 			if (name) {					
+				
 				fs.watchFile(filename, {persistent:true, interval: 100}, function() {
+				
 					fs.readFile(filename, function (err, data) {
 						if (err)
 							return;
 						
+						// Sometimes watchFile can be called before
+						// template actually builds
+						// check this out
 						if (refreshFunc = refreshFunc || refreshTemplate[name]) {
-							var params = {};
 							
-							params[REFRESH] = true;
-							refreshFunc(process.call(this, data.toString(), params));
+							refreshFunc(process.call(REF_CHECK, data.toString()));
 						}
 					});
 					
@@ -126,20 +159,29 @@ nTPL = (function($,undefined) {
 		*	@return {string}
 		*/
 		function readTemplateAsync(filename, process, callback) {
+		
+			// Check if file exists in async mode
 			path.exists(filename, function(exists) {
+				// If not - we've got not filename, but template
+				// Fire callback
 				if (!exists)
 					return callback(filename);
-					
+				
+				// Get file contents
 				fs.readFile(filename, function (err, data) {
+					// If can't - fire callback
 					if (err)
 						callback(filename);
 					
+					// Fire callback with file contents
 					callback(data.toString());
 				});
 				
+				// Watch for file changes
 				watchChanges(filename, process);
 			});
-			return filename;
+			// No file - fire callback
+			callback(filename);
 		}
 		/**
 		* Check if templatename is filename
@@ -151,13 +193,20 @@ nTPL = (function($,undefined) {
 		*	@return {string}
 		*/
 		function readTemplateSync(filename, process) {
-		
+			// If there is no file
+			// "filename" isn't really filename, but template
+			// So return it
 			if (!path.existsSync(filename))
 				return filename;
+				
+			// Get template contents
+			var template = fs.readFileSync(filename).toString();
 			
+			// Watch for file changes
 			watchChanges(filename, process);
 						
-			return fs.readFileSync(filename).toString();
+			
+			return template;
 			
 		}
 		/**
@@ -185,7 +234,7 @@ nTPL = (function($,undefined) {
 			
 			// If we at least have template - call normal
 			if (_template)
-				return $main(_template, _args || [], _name, options.callback);
+				return $main(_template, _args || [], _name, options.callback, options.watch);
 		}
 		/**
 		* Generate, cache, return template
@@ -193,9 +242,13 @@ nTPL = (function($,undefined) {
 		* $.template("%template%", {args}, [name]) - generate template and optionally give it a name
 		* Args = Template arguments
 		* @param {string} str Input template, or template name
+		* @param {array} args Predefined arguments
+		* @param {string} name Template name
+		* @param {function(function(object): object): boolean} callback Callback for asynchronous mode
+		* @param {boolean} watch Watch file changes or not?
 		* @return {function(object): object}
 		*/
-		function $main(str , args, name, callback) {
+		function $main(str , args, name, callback, watch) {
 			// If have been cached by name
 			// $.template("name")
 			
@@ -215,8 +268,9 @@ nTPL = (function($,undefined) {
 				return namecache[name] = i;
 			
 			// Store template name
-			process._name = name;
-				
+			process[NAME] = name;
+			process[WATCH] = watch;
+			
 			// If we don't have callback
 			if (!callback) {			
 				// Do all work in sync
@@ -224,9 +278,7 @@ nTPL = (function($,undefined) {
 			} else {
 				// Do all work in async
 				readTemplateAsync(str, process, function (data) {					
-					process(data, {
-						callback: callback
-					});
+					process(data, callback);
 				});
 			}
 			/**
@@ -235,8 +287,8 @@ nTPL = (function($,undefined) {
 			* @param {object} options Processing options
 			* @return {function(object): object}
 			*/
-			function process(str, options) {			
-				options = options || {};
+			function process(str, callback) {			
+				
 				var	compiled,
 					namespace = {
 						// Storage for replacements
@@ -299,7 +351,11 @@ nTPL = (function($,undefined) {
 				// In secure closure
 				i = $eval("b=function($scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')}");						
 				
-				if (options[REFRESH])
+				// Because REF_CHECK is internal scoped variable
+				// We can use it to check operations
+				// But we simply need to return fresh template functions
+				// If called in REF_CHECK context
+				if (this === REF_CHECK)
 					return { i: i, namespace: namespace };
 				
 				/**
@@ -363,8 +419,8 @@ nTPL = (function($,undefined) {
 					(namecache[name] = local);
 				
 				// Return wrapper
-				if (options.callback)
-					options.callback(local);
+				if (callback)
+					callback(local);
 				else
 					return local;
 			}
