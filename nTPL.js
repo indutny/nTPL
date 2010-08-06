@@ -309,37 +309,37 @@ this.nTPL = nTPL = (function($,undefined) {
 							.replace($tabs , " ")
 								.replace($brackets , $tab)
 									.split($tab).map(
-						function ( elem, i, varname) {
-					
-							if (i%2) {
-								// Code
-							
-								// If there is modificator
-								( (i = elem.match($modificator)) && ( i.f = modificators[ i[1] ]) ) &&
-									// Use it to translate elem
-									(
-										elem = i.f(elem.substr(i[0].length), namespace)
-									);
-								
-									return elem;
-							}
-							
-							// Text
-							if (!elem)
-								return "";
-												
-							// Push text into namespace as $(var number)
-							varname = "$" + varcount;					
-							args.push(varname);					
-							namespace[ varname ] = elem;
-							
-							// So, instead of inline printing we will print variable
-							return "$p($" + ( varcount++ ) + ",$_);";				
-							
+										function ( elem, i, varname) {
 									
-						}
-					// Then join all rows
-					).join("") : "";
+											if (i%2) {
+												// Code
+											
+												// If there is modificator
+												( (i = elem.match($modificator)) && ( i.f = modificators[ i[1] ]) ) &&
+													// Use it to translate elem
+													(
+														elem = i.f(elem.substr(i[0].length), namespace)
+													);
+												
+													return elem;
+											}
+											
+											// Text
+											if (!elem)
+												return "";
+																
+											// Push text into namespace as $(var number)
+											varname = "$" + varcount;					
+											args.push(varname);					
+											namespace[ varname ] = elem;
+											
+											// So, instead of inline printing we will print variable
+											return "$p($" + ( varcount++ ) + ",$_);";				
+											
+													
+										}
+									// Then join all rows
+									).join("") : "";
 					
 			
 					// Create function with overdriven args
