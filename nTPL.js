@@ -354,7 +354,21 @@ this.nTPL = nTPL = (function($,undefined) {
 			
 					// Create function with overdriven args
 					// In secure closure
-					i = $eval("(function($scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})");						
+					// Because we don't want server termination using try
+					try {
+
+						i = $eval("(function($scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})");						
+						
+					} catch (e) {
+						
+						// Notify admin about this
+						console.log("(" + (name || "blank") + ") >> " + e.toString());
+						
+						// Return functions that returns nothing
+						i = function(){return "";}
+						
+					}
+					
 				} else {
 					// Else function can return template itself
 					i = function(){ return str };
