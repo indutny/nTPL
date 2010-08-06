@@ -329,14 +329,13 @@ this.nTPL = nTPL = (function($,undefined) {
 												return "";
 																
 											// Push text into namespace as $(var number)
-											varname = "$" + varcount;					
-											args.push(varname);					
-											namespace[ varname ] = elem;
+											
+											namespace[ args[args.length] = ("$" + varcount) ] = elem;
 											
 											// So, instead of inline printing we will print variable
 											return "$p($" + ( varcount++ ) + ",$_);";				
 											
-													
+										
 										}
 									// Then join all rows
 									).join("") : "";
