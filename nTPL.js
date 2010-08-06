@@ -17,14 +17,6 @@
 *		See nTPL.block and nTPL.filter for examples of usage
 */
 this.nTPL = nTPL = (function($,undefined) {
-	/** @const */
-	var WATCH = "w";
-	
-	/** @const */
-	var NAME = "n";
-	
-	/** @const */
-	var REF_CHECK = {};
 	
 	/** Escaping closure
 	 * Only global variables will be available here
@@ -45,6 +37,15 @@ this.nTPL = nTPL = (function($,undefined) {
 				
 				var fs = require('fs');
 				var path = require('path');
+				
+				/** @const */
+				var REF_CHECK = {};
+				
+				/** @const */
+				var WATCH = "w";
+
+				/** @const */
+				var NAME = "n";
 				
 				// Modificators
 				modificators = {
