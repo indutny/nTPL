@@ -4,8 +4,8 @@ require("./nTPL.filter");
 
 var base = nTPL({
 	template: "./base.html",
-	name: "base"
-	watch, true
+	name: "base",
+	watch: true
 });
 	
 var home = nTPL({
