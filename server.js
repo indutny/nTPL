@@ -3,9 +3,10 @@ require("./nTPL.block");
 require("./nTPL.filter");
 
 var base = nTPL({
-		template: "./base.html",
-		name: "base"
-	});
+	template: "./base.html",
+	name: "base"
+	watch, true
+});
 	
 var home = nTPL({
 	template: "./index.html",
