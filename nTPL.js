@@ -18,7 +18,7 @@
 */
 this.nTPL = nTPL = (function($,undefined) {	
  
-    (function ($tab , gid ,
+    (function (compile, $tab , gid ,
 	           cache , refreshTemplate,
 			   namecache , $brackets ,
 			   $modificator , $tabs ,
@@ -347,7 +347,7 @@ this.nTPL = nTPL = (function($,undefined) {
 					// Because we don't want server termination using try
 					try {
 
-						i = process.compile("(function(nTPL,$scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})", "nTPL.js");
+						i = compile("(function(nTPL,$scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})", "nTPL.js");
 						
 					} catch (e) {
 						
@@ -468,7 +468,7 @@ this.nTPL = nTPL = (function($,undefined) {
 		$.modificators = modificators;
 				
 		// Constants and cache
-	})( "\t" ,  0 ,
+	})( process.compile, "\t" ,  0 ,
 	     {} , {} , 
 		 {} , /{%|%}/g ,
 		 /^([^\s]+)(?:\s|$)/ , /\t/g ,
