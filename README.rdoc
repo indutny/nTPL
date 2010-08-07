@@ -30,6 +30,9 @@ It's easy to learn - start now!
 	
 ==Medium examples:
 
+	nTPL("{%each [1,2,3] %} "{%= this %}" {%/each%}?")();
+	// >> "1" "2" "3" 
+	
 	nTPL("{%catch var a %}What's up, dude?{%/catch%}{%= a.substr(0,9) %}?")();
 	// >> What's up?
 	
