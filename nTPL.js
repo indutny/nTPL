@@ -346,7 +346,7 @@ this.nTPL = nTPL = (function($,undefined) {
 					// Because we don't want server termination using try
 					try {
 
-						i = compile("(function(nTPL,$scope,$args,$p," + args.join(",") + "){$_=[];" + compiled + ";return $_.join('')})", "nTPL.js");
+						i = compile("(function(nTPL,$scope,$args," + args.join(",") + "){$_=[];function $p(a,$_){$_[$_.length]=a};" + compiled + ";return $_.join('')})", "nTPL.js");
 						
 					} catch (e) {
 						
@@ -378,22 +378,11 @@ this.nTPL = nTPL = (function($,undefined) {
 				*/
 				function createArguments(callArgs,result,i) {
 					
-					// Store local copy of $r (replacement array)
-					var $r = namespace.$r;
-					
 					/** There're some predefined arguments such as:
 					* $scope = namespace,
 					* $args = callArgs,
-					* $p = function
-					*
-					* $p is pushing function, declared here to have access to $r variable
 					*/
-					result = [ $, namespace, callArgs , function (a,$_) {
-						
-						// Push string or object into global output stack
-						return $_[$_.length] = a;					
-								
-					} ];
+					result = [ $, namespace, callArgs ];
 					
 					for (i in args)					
 						result[ result.length ] = callArgs[ args[i] ];
