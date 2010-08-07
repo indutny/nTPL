@@ -1,15 +1,15 @@
-require("./nTPL");
-require("./nTPL.block");
-require("./nTPL.filter");
+require("./lib/nTPL");
+require("./lib/nTPL.block");
+require("./lib/nTPL.filter");
 
 var base = nTPL({
-	template: "./base.html",
+	template: "./tpl/base.html",
 	name: "base",
 	watch: true
 });
 	
 var home = nTPL({
-	template: "./index.html",
+	template: "./tpl/index.html",
 	name: "home",
 	watch: true	
 });
