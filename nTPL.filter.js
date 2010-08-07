@@ -46,7 +46,7 @@
 	/**
 	* This function will be exposed by plugin into template as $scope.$filter
 	* @param{string} filter Filter name
-	* @param{function} code Scope returning array of strings
+	* @param{function(string): string} code Scope returning array of strings
 	*/
 	function filter_func(filter , code) {		
 		return (filters[filter] || nopfilter)(code([]).join(""));

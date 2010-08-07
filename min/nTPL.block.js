@@ -1,0 +1,4 @@
+/*
+ nTPL block plugin v.0.0.1;Copyright 2010, Fedor Indutny;Released under MIT license **/
+(function(h,c){function k(a,b,d,e,g){c[d].e=h(e);g=g||{};a.join=function(){a=[];g.$blockStack=c[d].a;b(c[d].e(g),a);j(d);return a.join("")}}function l(a,b,d,e,g,m,n,f){f=c[b];if(e)g=f.q;else f.q=g;if(f.e){(f=c[b].a[a])?f[f.length]=d([]):c[b].a[a]=[d([])];return""}if((e=g.$blockStack)&&e[a])(f=(d=e[a])[0])&&d.length>1&&(e[a]=d.slice(1));else f=d([]);return f}function j(a,b){c[a]={};c[a].a={};c[a][b]=b||c[a][b];c[a].f=0}function i(a){if(c[a.$gid])return a.$gid;j(a.$gid,a);a.$extends=k;a.$block=l;return a.$gid}
+h.modificators["extends"]=function(a,b){return"$scope.$extends($_,$p,"+i(b)+","+a+");"};h.modificators.block=function(a,b){return"$p($scope.$block("+a+","+i(b)+",function($_){"};h.modificators["/block"]=function(a,b,d,e){e=c[d=i(b)].f;c[d].f=1;return";return $_.join('')},"+e+(e?")":",$args)")+",$_);"}})(nTPL,{});
