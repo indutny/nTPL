@@ -282,8 +282,6 @@ this.nTPL = nTPL = (function($,undefined) {
 				
 				var	compiled,
 					namespace = {
-						// Storage for replacements
-						$r	:	[],
 						// Global template Id, may be used by plugins
 						$gid: gid+=1
 					},
