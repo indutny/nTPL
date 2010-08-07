@@ -318,7 +318,7 @@ this.nTPL = nTPL = (function($,undefined) {
 												( (i = elem.match($modificator)) && ( i.f = modificators[ i[1] ]) ) &&
 													// Use it to translate elem
 													(
-														elem = i.f(elem.substr(i[0].length), namespace)
+														elem = i.f(elem.substr(i[0].length), namespace) || ""
 													);
 												
 													return elem;
