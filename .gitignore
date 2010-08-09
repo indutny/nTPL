@@ -1,1 +1,4 @@
 *.zip
+lib/nTPL.native/build
+lib/nTPL.native/build/*
+lib/nTPL.native/.lock-wscript
