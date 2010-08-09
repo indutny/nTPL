@@ -1,5 +1,6 @@
 import os
-from os.path import abspath
+from os.path import exists, abspath
+from shutil import copy
 
 srcdir = "."
 blddir = "build"
@@ -16,3 +17,7 @@ def build(bld):
 	cargo.cxxflags = ["-g",]
 	cargo.target = 'nTPL.native'
 	cargo.source = 'nTPL.native.cc'
+	
+def shutdown():  
+    if exists('./build/default/nTPL.native.node') and not exists('../nTPL.native.node'):
+      copy('./build/default/nTPL.native.node', '../nTPL.native.node')
