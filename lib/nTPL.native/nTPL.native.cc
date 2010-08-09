@@ -86,11 +86,19 @@ static Local<String> callModificator( Position* pos, Local<Object> modificators 
 		// Get properties' value
 		Local<Value> tmp = modificators->Get(pos->modificator);	
 	
-		// If not function - return unprocessed code (note, that modificator
-		// in this case is part of code too!)
+		// If not function - return unprocessed code or modificator's value
+		// (note, that modificator in this case is part of code too!)
 		if (!tmp->IsFunction())
 		{
-			return String::Concat(pos->modificator, code);
+			// If not undefined - return modificator's value
+			if (!tmp->IsUndefined())
+			{
+				return tmp->ToString();
+			}
+			else 
+			{
+				return String::Concat(pos->modificator, code);
+			}
 		}
 		
 		// Get function
@@ -122,7 +130,7 @@ static void pushVariable( Position* pos, Replacements* replace)
 	char* var_num = new char[28];
 	
 	// Templating
-	sprintf(var_num, "$p($rep[%d],$_);", replace->replacements_count);
+	sprintf(var_num, "$p($r[%d],$_);", replace->replacements_count);
 	
 	// Add replacement var
 	replace->replacements->Set(

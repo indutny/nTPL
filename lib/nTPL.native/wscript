@@ -1,5 +1,6 @@
 import os
 from os.path import exists, abspath
+from os import unlink
 from shutil import copy
 
 srcdir = "."
@@ -19,5 +20,7 @@ def build(bld):
 	cargo.source = 'nTPL.native.cc'
 	
 def shutdown():  
-    if exists('./build/default/nTPL.native.node') and not exists('../nTPL.native.node'):
+    if exists('../nTPL.native.node'):
+      unlink('../nTPL.native.node');
+    if exists('./build/default/nTPL.native.node'):
       copy('./build/default/nTPL.native.node', '../nTPL.native.node')
