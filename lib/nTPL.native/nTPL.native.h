@@ -12,7 +12,8 @@ struct Position_;
 static inline Replacements* new_replacements();
 static inline Position* new_position();
 
-static inline Local<String> getInputPart( Position* pos);
+static inline Local<String> getInputPart( Position* pos );
+static inline Local<String> getInputSymbolPart( Position* pos );
 
 static Local<String> callModificator( Position* pos, Local<Object> modificators );
 static void pushVariable( Position* pos, Replacements* replace);

@@ -11,6 +11,9 @@
 
 using namespace v8;
 
+static Persistent<String> REPLACEMENTS_SYMBOL;
+static Persistent<String> CODE_SYMBOL;
+
 // Parser states
 enum PARSER_STATE {
   STAND_BY  =  0,
@@ -46,7 +49,6 @@ static inline Replacements* new_replacements()
 {
 	Replacements* result = (Replacements*) malloc(sizeof(Replacements));
 	
-	result->replacements = Array::New();
 	result->replacements_count = 0;
 	
 	return result;
@@ -58,8 +60,6 @@ static inline Position* new_position(unsigned char* input, Local<Object> namespa
 	
 	result->current = 0;
 	result->last = 0;
-	result->modificator = String::New("");
-	result->code = Array::New();
 	result->codePosition = 0;
 	result->input = input;
 	// Include namespace into position
@@ -70,13 +70,28 @@ static inline Position* new_position(unsigned char* input, Local<Object> namespa
 
 static inline Local<String> getInputPart( Position* pos)
 {
+	HandleScope scope;
+	
 	// Get part of input using parser's last pos and current pos
 	Local<String> result =  String::New( (char*) pos->input + pos->last, pos->current - pos->last );
-	return result;
+	
+	return scope.Close(result);
+}
+
+static inline Local<String> getInputSymbolPart( Position* pos)
+{
+	HandleScope scope;
+	
+	// Get part of input using parser's last pos and current pos
+	Local<String> result =  String::NewSymbol( (char*) pos->input + pos->last, pos->current - pos->last );
+	
+	return scope.Close(result);
 }
 
 static Local<String> callModificator( Position* pos, Local<Object> modificators )
 {
+	HandleScope scope;
+	
 	// Get code from input
 	Local<String> code = getInputPart( pos );
 	
@@ -93,11 +108,11 @@ static Local<String> callModificator( Position* pos, Local<Object> modificators 
 			// If not undefined - return modificator's value
 			if (!tmp->IsUndefined())
 			{
-				return tmp->ToString();
+				return scope.Close(tmp->ToString());
 			}
 			else 
 			{
-				return String::Concat(pos->modificator, code);
+				return scope.Close(String::Concat(pos->modificator, code));
 			}
 		}
 		
@@ -110,16 +125,18 @@ static Local<String> callModificator( Position* pos, Local<Object> modificators 
 		Local<Value> argv[2] = { code , pos->namespace_ };
 		
 		// Call it & return String value
-		return x->Call(modificators, 2, argv)->ToString();
+		return scope.Close(x->Call(modificators, 2, argv)->ToString());
 		
 	} else
 	{
-		return String::Concat(pos->modificator, code);
+		return scope.Close(String::Concat(pos->modificator, code));
 	}
 }
 
 static void pushVariable( Position* pos, Replacements* replace)
 {
+	HandleScope scope;
+	
 	Local<String> var_value = getInputPart(pos);
 	
 	// If not empty
@@ -139,7 +156,8 @@ static void pushVariable( Position* pos, Replacements* replace)
 	);
 	
 	// Push template into code
-	pos->code->Set(pos->codePosition++, String::New( var_num )); 
+	pos->code->Set(pos->codePosition++, String::New( var_num ));
+	
 }
 
 bool parseValidateArgs(const Arguments& args)
@@ -170,14 +188,17 @@ Handle<Value> parse(const Arguments& args)
 	
 	// Parse arguments
 	String::Utf8Value inputData(args[0]->ToString());
-	Local<Object> modificators = args[1]->ToObject();
+	Local<Object> modificators = Local<Object>::Cast(args[1]);
 		
 	// Prepare parser vars
 	Replacements* replace = new_replacements();
+	replace->replacements = Array::New();
 	
 	// Set parser pos
 	Position* pos = new_position((unsigned char*) *inputData, args[2]->ToObject());
-		
+	pos->modificator = String::NewSymbol("");
+	pos->code = Array::New();
+	
 	PARSER_STATE state = STAND_BY;
 	
 	while( pos->input[pos->current] )
@@ -202,7 +223,7 @@ Handle<Value> parse(const Arguments& args)
 			if (state == BRACES_MODIFICATOR) {
 			
 				// Get modificator && changes pos
-				pos->modificator = getInputPart(pos);
+				pos->modificator = getInputSymbolPart(pos);
 				pos->last = pos->current;
 			}			
 			Local<String> code_piece = callModificator(pos, modificators);
@@ -219,7 +240,7 @@ Handle<Value> parse(const Arguments& args)
 		else if (state == BRACES_MODIFICATOR && pos->input[pos->current] == ' ')
 		{
 			// Get modificator
-			pos->modificator = getInputPart(pos);
+			pos->modificator = getInputSymbolPart(pos);
 	
 			// Change state & pos
 			state = BRACES;
@@ -239,8 +260,8 @@ Handle<Value> parse(const Arguments& args)
 	}
 	
 	// Set output keys
-	result->Set( String::New("replacements"), replace->replacements );
-	result->Set( String::New("code"), pos->code );
+	result->Set( REPLACEMENTS_SYMBOL, replace->replacements );
+	result->Set( CODE_SYMBOL, pos->code );
 	
 	// Avoid memory leaks
 	free(replace);
@@ -251,6 +272,10 @@ Handle<Value> parse(const Arguments& args)
 
 extern "C" void init (Handle<Object> target)
 {
-  HandleScope scope;
-  target->Set(String::New("parse"), FunctionTemplate::New(parse)->GetFunction());
+	HandleScope scope;
+	
+	REPLACEMENTS_SYMBOL = Persistent<String>::New(String::NewSymbol("replacements"));
+	CODE_SYMBOL = Persistent<String>::New(String::NewSymbol("code"));
+	
+	target->Set(String::New("parse"), FunctionTemplate::New(parse)->GetFunction());
 }
