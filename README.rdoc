@@ -10,7 +10,7 @@ On my PC - running nTPL's:
 
 Feel the difference?
 
-Some features:
+==Some features:
 * nTPL have native parser written on C++, so templates are compiled very fast.
 * nTPL have many optimizations in template rendering process.
 * nTPL uses buffers
