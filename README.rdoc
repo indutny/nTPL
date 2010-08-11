@@ -10,6 +10,13 @@ On my PC - running nTPL's:
 
 Feel the difference?
 
+Some features:
+* nTPL have native parser written on C++, so templates are compiled very fast.
+* Also nTPL have many optimizations in template rendering process.
+* nTPL uses buffers
+* nTPL is extendable (nTPL.modificators)
+* nTPL can reload template on file change (watch: true)
+
 ==Build instructions:
 Only nTPL.native need to be builded.
 After that all nTPL module will be stored in lib folder:
