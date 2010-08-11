@@ -12,7 +12,7 @@ Feel the difference?
 
 Some features:
 * nTPL have native parser written on C++, so templates are compiled very fast.
-* Also nTPL have many optimizations in template rendering process.
+* nTPL have many optimizations in template rendering process.
 * nTPL uses buffers
 * nTPL is extendable (nTPL.modificators)
 * nTPL can reload template on file change (watch: true)
