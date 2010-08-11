@@ -1,6 +1,15 @@
 ==nTPL project: simple, fast and powerfull templates for node.js (http://github.com/donnerjack13589/nTPL).
 It's easy to learn - start now!
 
+==It's fast:
+Mustache saids that running complex.html example gives following results:
+	Mu -  40 secs  (benchmarks/million_complex.js)
+
+On my PC - running nTPL's:
+	nTPL - 2 secs (benchmarks/million_complex.js)
+
+Feel the difference?
+
 ==Build instructions:
 Only nTPL.native need to be builded.
 After that all nTPL module will be stored in lib folder:
@@ -13,7 +22,6 @@ After that all nTPL module will be stored in lib folder:
 	./build.sh
 	cd ../../tests/
 	node run.js
-	
 
 ==Basic examples:
 	

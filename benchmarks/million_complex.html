@@ -1,0 +1,18 @@
+<h1>{%= header %}</h1>
+{%if list.length %}
+	<ul>
+		{%each list %}
+			{%if this.current %}
+			<li>
+				<strong>{%= this.name %}</strong>
+			</li>
+			{%else%}
+			<li>
+				{%= this.url %}
+			</li>
+			{%/if%}
+		{%/each %}
+	</ul>
+{%else%}
+	<p>List is empty</p>
+{%/if%}
