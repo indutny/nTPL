@@ -17,7 +17,6 @@ After that all nTPL module will be stored in lib folder:
 	
 	git clone git@github.com:donnerjack13589/nTPL.git
 	cd nTPL
-	git checkout dev
 	cd lib/nTPL.native
 	./build.sh
 	cd ../../tests/
