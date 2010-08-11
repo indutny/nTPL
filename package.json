@@ -9,7 +9,6 @@
   ],
   
   "version"       : "0.0.3",
-  "directories"   : { "lib": "./lib"},
   "engines"       : { "node": ">=0.1.103" },
   "scripts" :{
 	"preinstall" : "make && make install",
