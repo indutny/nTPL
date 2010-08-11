@@ -3,10 +3,10 @@ this.run = function(test, nTPL, callback) {
 	
 	var fs = require("fs");
 	
-	fs.writeFile("./tests/file-18", "123", function(){
+	fs.writeFile("./tests/file-23", "123", function(){
 		
 		var b = nTPL({
-			template: "./tests/file-18",
+			template: "./tests/file-23",
 			callback: function (a) {
 				callback( b !== "" && {message: "Not equal : " + b} );
 			}
