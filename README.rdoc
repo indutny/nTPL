@@ -2,17 +2,16 @@
 It's easy to learn - start now!
 
 ==Build instructions:
-	Only nTPL.native need to be builded
-	After that all nTPL module will be stored in lib folder:
-	(nTPL.js, nTPL.block.js, nTPL.filter.js, nTPL.native.node)
+Only nTPL.native need to be builded
+After that all nTPL module will be stored in lib folder:
+(nTPL.js, nTPL.block.js, nTPL.filter.js, nTPL.native.node)
 	
-	<code>
 	git clone git@github.com:donnerjack13589/nTPL.git
 	cd nTPL/lib/nTPL.native
 	./build.sh
 	cd ../../tests/
 	node run.js
-	</code>
+	
 
 ==Basic examples:
 	
