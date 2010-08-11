@@ -61,7 +61,7 @@ After that all nTPL module will be stored in lib folder:
 	// >> My Lord!
 	
 	var $ = require("nTPL");
-	$.render("It also works!");
+	$.parse("It also works!")();
 	// >> It also works!
 	
 ==Medium examples:
