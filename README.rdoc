@@ -17,7 +17,12 @@ Feel the difference?
 * nTPL is extendable (nTPL.modificators)
 * nTPL can reload template on file change (watch: true)
 
-==Build instructions:
+==Installation instructions:
+Simpleway:
+	curl http://github.com/donnerjack13589/nTPL/raw/master/install.sh | sh
+or if it dies "Permission Denied" or EACCESS error
+	curl http://github.com/donnerjack13589/nTPL/raw/master/install.sh | sudo sh
+	
 Only nTPL.native need to be builded.
 After that all nTPL module will be stored in lib folder:
 (nTPL.js, nTPL.block.js, nTPL.filter.js, nTPL.native.node)
@@ -54,6 +59,10 @@ After that all nTPL module will be stored in lib folder:
 		args: ["godmode"]
 	})({godmode: true});
 	// >> My Lord!
+	
+	var $ = require("nTPL");
+	$.render("It also works!");
+	// >> It also works!
 	
 ==Medium examples:
 
@@ -94,6 +103,8 @@ After that all nTPL module will be stored in lib folder:
 		
 ==Block module
 
+	require("nTPL.block");
+	
 	nTPL({
 		template: "Hello, {%block 'username'%}{%/block%}!",
 		args: [],
