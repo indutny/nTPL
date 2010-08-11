@@ -2,7 +2,7 @@
 It's easy to learn - start now!
 
 ==Build instructions:
-Only nTPL.native need to be builded
+Only nTPL.native need to be builded.
 After that all nTPL module will be stored in lib folder:
 (nTPL.js, nTPL.block.js, nTPL.filter.js, nTPL.native.node)
 	
