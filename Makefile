@@ -9,7 +9,7 @@ build:
 
 install:
 	@echo "Installing nTPL ..."
-	@cp -fr lib/ $(LIB_PREFIX)/
+	@cp -fr lib/* $(LIB_PREFIX)/
 	
 uninstall:
 	@echo "Uninstalling nTPL ..."
