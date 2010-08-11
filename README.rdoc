@@ -22,7 +22,8 @@ Simpleway:
 	curl http://github.com/donnerjack13589/nTPL/raw/master/install.sh | sh
 or if it dies "Permission Denied" or EACCESS error
 	curl http://github.com/donnerjack13589/nTPL/raw/master/install.sh | sudo sh
-	
+
+==Another installation instructions:	
 Only nTPL.native need to be builded.
 After that all nTPL module will be stored in lib folder:
 (nTPL.js, nTPL.block.js, nTPL.filter.js, nTPL.native.node)
