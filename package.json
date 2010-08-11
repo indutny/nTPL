@@ -2,15 +2,17 @@
   "name"          : "nTPL",
   "description"   : "nTPL is node.js extremely fast template engine",
   "url"           : "http://github.com/donnerjack13589/nTPL",
-  "keywords"      : ["template","nTPL","parser"],
+  "keywords"      : ["template", "nTPL" ,"parser"],
   "author"        : "Fedor Indutny <fedor.indutny@gmail.com>",
-  "contributors"  : [],
+  "contributors"  : [
+	{name: "Fedor Indutny", email: "fedor.indutny@gmail.com"}
+  ],
+  
   "version"       : "0.0.3",
-  "main"          : "./lib/nTPL",
-  "directories"   : { "lib": "./lib", "test": "./tests/" },
+  "directories"   : { "lib": "./lib"},
   "engines"       : { "node": ">=0.1.103" },
   "scripts" :{
-	"activate" : "cd nTPL.native && ./build.sh && cd ..",
-	"test" : "cd tests && node run.js && cd .."
+	"preinstall" : "make && make install",
+	"preuninstall" : "make uninstall"
   }
 }
