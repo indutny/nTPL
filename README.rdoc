@@ -17,12 +17,15 @@ Feel the difference?
 * nTPL is extendable (nTPL.modificators)
 * nTPL can reload template on file change (watch: true)
 
-==Installation instructions:
+==Installation:
+	npm install nTPL
+
+==Manual installation instructions:
 	curl http://github.com/donnerjack13589/nTPL/raw/master/install.sh | sh
 or if it dies "Permission Denied" or EACCESS error
 	curl http://github.com/donnerjack13589/nTPL/raw/master/install.sh | sudo sh
 	
-==Advanced instructions:	
+==Advanced installation instructions:	
 	git clone git@github.com:donnerjack13589/nTPL.git
 	cd nTPL
 	make
