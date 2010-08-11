@@ -20,7 +20,7 @@ def build(bld):
 	cargo.source = 'nTPL.native.cc'
 	
 def shutdown():  
-    if exists('../nTPL.native.node'):
-      unlink('../nTPL.native.node');
+    if exists('../lib/nTPL.native.node'):
+      unlink('../lib/nTPL.native.node');
     if exists('./build/default/nTPL.native.node'):
-      copy('./build/default/nTPL.native.node', '../nTPL.native.node')
+      copy('./build/default/nTPL.native.node', '../lib/nTPL.native.node')

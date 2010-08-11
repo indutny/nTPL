@@ -24,9 +24,9 @@ After that all nTPL module will be stored in lib folder:
 	
 	git clone git@github.com:donnerjack13589/nTPL.git
 	cd nTPL
-	cd lib/nTPL.native
+	cd nTPL.native
 	./build.sh
-	cd ../../tests/
+	cd ../tests/
 	node run.js
 
 ==Basic examples:

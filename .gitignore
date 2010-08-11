@@ -1,5 +1,5 @@
 *.zip
-lib/nTPL.native/build
-lib/nTPL.native/build/*
-lib/nTPL.native/.lock-wscript
+nTPL.native/build
+nTPL.native/build/*
+nTPL.native/.lock-wscript
 lib/nTPL.native.node
