@@ -1,1 +1,0 @@
-rm -rf build/ && node-waf configure && node-waf build
