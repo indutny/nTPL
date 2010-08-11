@@ -12,7 +12,7 @@
 using namespace v8;
 
 static Persistent<String> REPLACEMENTS_SYMBOL;
-static Persistent<String> replVars_SYMBOL;
+static Persistent<String> REPLVARS_SYMBOL;
 static Persistent<String> CODE_SYMBOL;
 
 // Parser states
@@ -274,7 +274,7 @@ Handle<Value> parse(const Arguments& args)
 	
 	// Set output keys
 	result->Set( REPLACEMENTS_SYMBOL, replace->replacements );
-	result->Set( replVars_SYMBOL, replace->replVars );
+	result->Set( REPLVARS_SYMBOL, replace->replVars );
 	result->Set( CODE_SYMBOL, pos->code );
 	
 	// Avoid memory leaks
@@ -289,7 +289,7 @@ extern "C" void init (Handle<Object> target)
 	HandleScope scope;
 	
 	REPLACEMENTS_SYMBOL = Persistent<String>::New(String::NewSymbol("replacements"));
-	replVars_SYMBOL = Persistent<String>::New(String::NewSymbol("replVars"));
+	REPLVARS_SYMBOL = Persistent<String>::New(String::NewSymbol("replVars"));
 	CODE_SYMBOL = Persistent<String>::New(String::NewSymbol("code"));
 	
 	target->Set(String::New("parse"), FunctionTemplate::New(parse)->GetFunction());
