@@ -17,10 +17,10 @@ def build(bld):
 	cargo = bld.new_task_gen('cxx', 'shlib', 'node_addon')
 	cargo.cxxflags = ["-g",]
 	cargo.target = 'nTPL.native'
-	cargo.source = 'nTPL.native.cc'
+	cargo.source = 'nTPL.native/nTPL.native.cc'
 	
 def shutdown():  
-    if exists('../lib/nTPL.native.node'):
-      unlink('../lib/nTPL.native.node');
+    if exists('./lib/nTPL.native.node'):
+      unlink('./lib/nTPL.native.node');
     if exists('./build/default/nTPL.native.node'):
-      copy('./build/default/nTPL.native.node', '../lib/nTPL.native.node')
+      copy('./build/default/nTPL.native.node', './lib/nTPL.native.node')    

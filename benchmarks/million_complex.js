@@ -1,4 +1,4 @@
-require("../lib/nTPL");
+require("nTPL");
 
 var tpl = nTPL({
 	template: "./complex.html",

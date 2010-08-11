@@ -1,6 +1,6 @@
-require("./lib/nTPL");
-require("./lib/nTPL.block");
-require("./lib/nTPL.filter");
+require("nTPL");
+require("nTPL.block");
+require("nTPL.filter");
 
 var base = nTPL({
 	template: "./tpl/base.html",
