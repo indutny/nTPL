@@ -12,6 +12,7 @@
 using namespace v8;
 
 static Persistent<String> REPLACEMENTS_SYMBOL;
+static Persistent<String> replVars_SYMBOL;
 static Persistent<String> CODE_SYMBOL;
 
 // Parser states
@@ -24,6 +25,7 @@ enum PARSER_STATE {
 // Here will be replacements
 struct Replacements_ {
 	Local<Array> replacements;
+	Local<Array> replVars;
 	int replacements_count;
 };
 typedef struct Replacements_ Replacements;
@@ -143,17 +145,27 @@ static void pushVariable( Position* pos, Replacements* replace)
 	if (!var_value->Length())
 		return;
 	
+	// Add replacement var
+	replace->replacements->Set(
+		replace->replacements_count,
+		var_value
+	);
+	
+	// Add number to replVars
+	// Will be joined in javascript
+	replace->replVars->Set(
+		replace->replacements_count,
+		Number::New(replace->replacements_count)
+	);	
+	
 	// Create buffer for output
 	char* var_num = new char[28];
 	
 	// Templating
-	sprintf(var_num, "$p($r[%d],$_);", replace->replacements_count);
+	sprintf(var_num, "$p($%d,$_);", replace->replacements_count);
 	
-	// Add replacement var
-	replace->replacements->Set(
-		replace->replacements_count++,
-		var_value
-	);
+	// Increment count
+	replace->replacements_count++;
 	
 	// Push template into code
 	pos->code->Set(pos->codePosition++, String::New( var_num ));
@@ -193,6 +205,7 @@ Handle<Value> parse(const Arguments& args)
 	// Prepare parser vars
 	Replacements* replace = new_replacements();
 	replace->replacements = Array::New();
+	replace->replVars = Array::New();
 	
 	// Set parser pos
 	Position* pos = new_position((unsigned char*) *inputData, args[2]->ToObject());
@@ -261,6 +274,7 @@ Handle<Value> parse(const Arguments& args)
 	
 	// Set output keys
 	result->Set( REPLACEMENTS_SYMBOL, replace->replacements );
+	result->Set( replVars_SYMBOL, replace->replVars );
 	result->Set( CODE_SYMBOL, pos->code );
 	
 	// Avoid memory leaks
@@ -275,6 +289,7 @@ extern "C" void init (Handle<Object> target)
 	HandleScope scope;
 	
 	REPLACEMENTS_SYMBOL = Persistent<String>::New(String::NewSymbol("replacements"));
+	replVars_SYMBOL = Persistent<String>::New(String::NewSymbol("replVars"));
 	CODE_SYMBOL = Persistent<String>::New(String::NewSymbol("code"));
 	
 	target->Set(String::New("parse"), FunctionTemplate::New(parse)->GetFunction());
