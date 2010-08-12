@@ -19,7 +19,8 @@ static Persistent<String> CODE_SYMBOL;
 enum PARSER_STATE {
   STAND_BY  =  0,
   BRACES_MODIFICATOR = 1,
-  BRACES    =  2
+  BRACES    =  2,
+  COMMENT_BRACES = 3
 };
 
 // Here will be replacements
@@ -215,8 +216,12 @@ Handle<Value> parse(const Arguments& args)
 	PARSER_STATE state = STAND_BY;
 	
 	while( pos->input[pos->current] )
-	{
-		if (pos->input[pos->current] == '{' && pos->input[pos->current+1] == '%')
+	{	
+		char current = pos->input[pos->current];
+		char next = pos->input[pos->current+1];
+		
+		// Open code-braces
+		if (state == STAND_BY && current == '{' && next == '%')
 		{	
 			
 			// Push all that was before
@@ -227,8 +232,19 @@ Handle<Value> parse(const Arguments& args)
 			pos->last = (pos->current+= 2);
 			
 		}
+		// Catch modificator
+		else if (state == BRACES_MODIFICATOR && current == ' ')
+		{
+			// Get modificator
+			pos->modificator = getInputSymbolPart(pos);
+	
+			// Change state & pos
+			state = BRACES;
+			pos->last = pos->current;
+		}
+		// Close code-braces
 		else if ((state == BRACES || state == BRACES_MODIFICATOR)
-		 && pos->input[pos->current] == '%' && pos->input[pos->current+1] == '}')
+		 && current == '%' && next == '}')
 		{
 			// Case: {%modificator_name%}
 			// State will be BRACES_MODIFICATOR
@@ -249,15 +265,18 @@ Handle<Value> parse(const Arguments& args)
 			state = STAND_BY;
 			pos->last = (pos->current+= 2);
 			
-		}
-		else if (state == BRACES_MODIFICATOR && pos->input[pos->current] == ' ')
+		}		
+		// Open comment braces
+		else if (state == STAND_BY && current == '{' && next == '*')
 		{
-			// Get modificator
-			pos->modificator = getInputSymbolPart(pos);
-	
-			// Change state & pos
-			state = BRACES;
-			pos->last = pos->current;
+			state = COMMENT_BRACES;
+			pos->last = (pos->current+= 2);
+		}
+		// Close comment braces
+		else if (state == COMMENT_BRACES && current == '*' && next == '}')
+		{
+			state = STAND_BY;
+			pos->last = (pos->current+= 2);
 		}
 		else
 		{
