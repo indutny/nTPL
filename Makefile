@@ -22,6 +22,6 @@ uninstall:
 test:
 	@cd ./tests && $(NODE) run.js && cd ..
 
-all : build install uninstall test
+all : build install test
 	
 .PHONY : build install uninstall test
