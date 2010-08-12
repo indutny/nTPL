@@ -1,9 +1,7 @@
 this.name = "Parser: comments";
 this.run = function(test, nTPL, callback) {
-	var a = nTPL("{* *}")();
-	
-	console.log(a);
-	test.equal(a, "you can see this");
+	var a = nTPL("You can{*'t*} see this")();
+	test.equal(a, "You can see this");
 	
 	
 }

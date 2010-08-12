@@ -152,11 +152,11 @@ static void pushVariable( Position* pos, Replacements* replace)
 		var_value
 	);
 	
-	// Add number to replVars
+	// Add r to replVars
 	// Will be joined in javascript
 	replace->replVars->Set(
 		replace->replacements_count,
-		Number::New(replace->replacements_count)
+		Integer::New(replace->replacements_count)
 	);	
 	
 	// Create buffer for output
@@ -225,7 +225,7 @@ Handle<Value> parse(const Arguments& args)
 		{	
 			
 			// Push all that was before
-			pushVariable( pos, replace);
+			pushVariable(pos, replace);
 			
 			// Change state & pos
 			state = BRACES_MODIFICATOR;
@@ -269,6 +269,9 @@ Handle<Value> parse(const Arguments& args)
 		// Open comment braces
 		else if (state == STAND_BY && current == '{' && next == '*')
 		{
+			// Push all that was before
+			pushVariable(pos, replace);
+			
 			state = COMMENT_BRACES;
 			pos->last = (pos->current+= 2);
 		}
