@@ -8,7 +8,7 @@
 	{name: "Fedor Indutny", email: "fedor.indutny@gmail.com"}
   ],
   
-  "version"       : "0.0.4",
+  "version"       : "0.1.0",
   "engines"       : { "node": ">=0.1.103" },
   "scripts" :{
 	"preinstall" : "make && make install",
