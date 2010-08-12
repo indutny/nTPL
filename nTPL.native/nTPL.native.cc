@@ -272,15 +272,18 @@ Handle<Value> parse(const Arguments& args)
 			// Push all that was before
 			pushVariable(pos, replace);
 			
+			// Change state & pos
 			state = COMMENT_BRACES;
 			pos->last = (pos->current+= 2);
 		}
 		// Close comment braces
 		else if (state == COMMENT_BRACES && current == '*' && next == '}')
 		{
+			// Change state & pos
 			state = STAND_BY;
 			pos->last = (pos->current+= 2);
 		}
+		// Skip symbols
 		else
 		{
 			// Change pos
