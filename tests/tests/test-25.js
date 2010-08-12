@@ -1,4 +1,4 @@
-this.name = "Parser: comments";
+this.name = "Block module: 'extends' with arguments";
 this.run = function(test, nTPL, callback) {
 
 	var a = nTPL({
