@@ -20,7 +20,8 @@ enum PARSER_STATE {
   STAND_BY  =  0,
   BRACES_MODIFICATOR = 1,
   BRACES    =  2,
-  COMMENT_BRACES = 3
+  COMMENT_BRACES = 3,
+  OPTIONS_BRACES = 4
 };
 
 // Here will be replacements
@@ -220,7 +221,7 @@ Handle<Value> parse(const Arguments& args)
 		char current = pos->input[pos->current];
 		char next = pos->input[pos->current+1];
 		
-		// Open code-braces
+		// Open code-braces {% ... %}
 		if (state == STAND_BY && current == '{' && next == '%')
 		{	
 			
@@ -232,7 +233,7 @@ Handle<Value> parse(const Arguments& args)
 			pos->last = (pos->current+= 2);
 			
 		}
-		// Catch modificator
+		// Catch modificator {%modificator ... %}
 		else if (state == BRACES_MODIFICATOR && current == ' ')
 		{
 			// Get modificator
@@ -242,7 +243,7 @@ Handle<Value> parse(const Arguments& args)
 			state = BRACES;
 			pos->last = pos->current;
 		}
-		// Close code-braces
+		// Close code-braces 
 		else if ((state == BRACES || state == BRACES_MODIFICATOR)
 		 && current == '%' && next == '}')
 		{
@@ -266,7 +267,7 @@ Handle<Value> parse(const Arguments& args)
 			pos->last = (pos->current+= 2);
 			
 		}		
-		// Open comment braces
+		// Open comment braces {* ... *}
 		else if (state == STAND_BY && current == '{' && next == '*')
 		{
 			// Push all that was before
@@ -279,6 +280,27 @@ Handle<Value> parse(const Arguments& args)
 		// Close comment braces
 		else if (state == COMMENT_BRACES && current == '*' && next == '}')
 		{
+			// Change state & pos
+			state = STAND_BY;
+			pos->last = (pos->current+= 2);
+		}
+		// Open options braces {&option_name=a,b,c,d&}
+		else if (state == STAND_BY && current == '{' && next == '&')
+		{
+			// Push all that was before
+			pushVariable(pos, replace);
+			
+			// Change state & pos
+			state = OPTIONS_BRACES;
+			pos->last = (pos->current+= 2);
+		}
+		// Close options braces
+		else if (state == OPTIONS_BRACES && current == '}')
+		{
+			// To-do parse options
+			// ...
+			// ...
+			
 			// Change state & pos
 			state = STAND_BY;
 			pos->last = (pos->current+= 2);
