@@ -64,7 +64,10 @@ or if it dies "Permission Denied" or EACCESS error
 	// >> It also works!
 	
 ==Medium examples:
-
+	
+	nTPL("foo {* text here won't be compiled or printed *} bar")();
+	// >> foo  bar
+	
 	nTPL("{%each [1,2,3] %} "{%= this %}" {%/each%}?")();
 	// >> "1" "2" "3" 
 	
