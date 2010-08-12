@@ -108,9 +108,9 @@ or if it dies "Permission Denied" or EACCESS error
 	require("nTPL.block");
 	
 	nTPL({
-		template: "Hello, {%block 'username'%}{%/block%}!",
-		args: [],
+		template: "Hello, {%block 'username'%}{%/block%}!{%= message %}",
+		args: ["message"],
 		name: "block-test"
 	});
-	nTPL("{%extends 'block-test'%}{%block 'username'%}Admin{%/block%}")();
-	// >> Hello, Admin!
+	nTPL("{%extends 'block-test', {message: "How do you do?"}%}{%block 'username'%}Admin{%/block%}")();
+	// >> Hello, Admin!How do you do?
