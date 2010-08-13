@@ -1,3 +1,5 @@
+{%set name index; %}
+{%set args username1; %}
 {%extends 'base' %}
 
 {%block 'title' %}nTPL Simple demo{%/block %}
@@ -41,6 +43,6 @@
 		And here comes body of page!
 	*}
 	<div id="A">
-		Hello, {%= '%username' %}!!!
+		Hello, {%= username %}!!!
 	</div>
 {%/block %}
