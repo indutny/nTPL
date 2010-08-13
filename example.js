@@ -18,7 +18,8 @@ http.createServer(function (req, res) {
   res.writeHead(200, {'Content-Type': 'text/html'});
   res.end(
 	home({
-		username: "Paul"
+		username: "Paul",
+		userfax: "12345678"
 	})
   ); 
 }).listen(80, "127.0.0.1");
