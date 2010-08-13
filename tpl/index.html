@@ -1,5 +1,5 @@
-{%set name index; %}
-{%set args username; %}
+{%set name index %}
+{%set args userfax,username %}
 {%extends 'base' %}
 
 {%block 'title' %}nTPL Simple demo{%/block %}
@@ -43,6 +43,7 @@
 		And here comes body of page!
 	*}
 	<div id="A">
-		Hello, {%= username %}!!!
+		Hello, {%= username || "" %}!!!<br />
+		Your fax number is : {%= userfax || "" %}
 	</div>
 {%/block %}
