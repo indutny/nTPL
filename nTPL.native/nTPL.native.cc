@@ -9,7 +9,7 @@
 #include <stdlib.h> // malloc
 #include <string.h> // strlen
 
-// #include "nTPL.mod.h"
+#include "nTPL.mod.h"
 
 using namespace v8;
 #ifdef NODE_NTPL_MODIFICATORS_MODULE
