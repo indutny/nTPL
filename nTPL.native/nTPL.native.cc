@@ -9,16 +9,20 @@
 #include <stdlib.h> // malloc
 #include <string.h> // strlen
 
-#include <nTPL.mod.h>
+// #include "nTPL.mod.h"
 
 using namespace v8;
+#ifdef NODE_NTPL_MODIFICATORS_MODULE
 using namespace nTPL;
+#endif //NODE_NTPL_MODIFICATORS_MODULE
 
 namespace nTPL {
 
 	static Persistent<String> REPLACEMENTS_SYMBOL;
 	static Persistent<String> REPLVARS_SYMBOL;
 	static Persistent<String> CODE_SYMBOL;
+	static Persistent<String> ARGS_SYMBOL;
+	static Persistent<String> OPTIONS_SYMBOL;
 
 	// Parser states
 	enum PARSER_STATE {
@@ -48,6 +52,7 @@ namespace nTPL {
 		int codePosition;
 		
 		Local<Object> namespace_;
+		Local<Object> options;
 		
 		unsigned char* input;
 		
@@ -63,16 +68,14 @@ namespace nTPL {
 		return result;
 	}
 
-	static inline Position* new_position(unsigned char* input, Local<Object> namespace_)
+	static inline Position* new_position(unsigned char* input)
 	{
 		Position* result = (Position*) malloc(sizeof(Position));
 		
 		result->current = 0;
 		result->last = 0;
 		result->codePosition = 0;
-		result->input = input;
-		// Include namespace into position
-		result->namespace_ = namespace_;
+		result->input = input;		
 		
 		return result;
 	}
@@ -131,10 +134,10 @@ namespace nTPL {
 			// Create arguments:
 			//  * code
 			//  * namespace
-			Local<Value> argv[2] = { code , pos->namespace_ };
+			Local<Value> argv[3] = { code , pos->namespace_ , pos->options};
 			
 			// Call it & return String value
-			return scope.Close(x->Call(modificators, 2, argv)->ToString());
+			return scope.Close(x->Call(modificators, 3, argv)->ToString());
 			
 		} else
 		{
@@ -210,7 +213,7 @@ namespace nTPL {
 		
 		// Parse arguments
 		String::Utf8Value inputData(args[0]->ToString());
-		Local<Object> modificators = args[1]->ToObject();
+		Local<Object> modificators = Local<Object>::Cast(args[1]);
 		
 		// Prepare parser vars
 		Replacements* replace = new_replacements();
@@ -218,11 +221,18 @@ namespace nTPL {
 		replace->replVars = Array::New();
 		
 		// Set parser pos
-		Position* pos = new_position((unsigned char*) *inputData, args[2]->ToObject());
+		Position* pos = new_position((unsigned char*) *inputData);
 		pos->modificator = String::NewSymbol("");
 		pos->code = Array::New();
 		
-		PARSER_STATE state = STAND_BY;
+		// Include namespace into position
+		pos->namespace_ = Local<Object>::Cast(args[2]);
+		
+		// Create options object
+		pos->options = Object::New();
+		pos->options->Set(ARGS_SYMBOL, Array::New());
+		
+		PARSER_STATE state = STAND_BY;		
 		
 		while( pos->input[pos->current] )
 		{	
@@ -308,6 +318,7 @@ namespace nTPL {
 		result->Set( REPLACEMENTS_SYMBOL, replace->replacements );
 		result->Set( REPLVARS_SYMBOL, replace->replVars );
 		result->Set( CODE_SYMBOL, pos->code );
+		result->Set( OPTIONS_SYMBOL, pos->options );
 		
 		// Avoid memory leaks
 		free(replace);
@@ -325,9 +336,13 @@ namespace nTPL {
 		
 		REPLACEMENTS_SYMBOL = PERS_LABEL("replacements");
 		REPLVARS_SYMBOL = PERS_LABEL("replVars");
-		CODE_SYMBOL = PERS_LABEL("code");
+		ARGS_SYMBOL = PERS_LABEL("args");
+		OPTIONS_SYMBOL = PERS_LABEL("options");
 		
+		#ifdef NODE_NTPL_MODIFICATORS_MODULE
 		mod::init(target);
+		#endif //NODE_NTPL_MODIFICATORS_MODULE
+		
 		EXPOSE_FUNC("parse",FunctionTemplate::New(parse)->GetFunction());
 	}
 

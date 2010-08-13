@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include <nTPL.mod.h>
+#include "nTPL_mod.h"
 
 namespace nTPL {
 

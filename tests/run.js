@@ -71,4 +71,6 @@ function done() {
 	console.log("Total: " + total + ", Success: " + success);
 }
 
+console.log("Running tests");
+
 next();
