@@ -8,20 +8,23 @@
 
 #include <nTPL.mod.h>
 
-struct Replacements_;
-struct Position_;
+namespace nTPL {
 
-static inline Replacements* new_replacements();
-static inline Position* new_position();
+	struct Replacements_;
+	struct Position_;
 
-static inline Local<String> getInputPart( Position* pos );
-static inline Local<String> getInputSymbolPart( Position* pos );
+	static inline Replacements* new_replacements() {};
+	static inline Position* new_position() {};
 
-static Local<String> callModificator( Position* pos, Local<Object> modificators );
-static void pushVariable( Position* pos, Replacements* replace);
+	static inline Local<String> getInputPart( Position* pos ) {};
+	static inline Local<String> getInputSymbolPart( Position* pos ) {};
 
-bool parseValidateArgs(const Arguments& args);
+	static Local<String> callModificator( Position* pos, Local<Object> modificators ) {};
+	static void pushVariable( Position* pos, Replacements* replace) {};
 
-Handle<Value> parse(const Arguments& args);
+	bool parseValidateArgs(const Arguments& args) {};
 
+	Handle<Value> parse(const Arguments& args) {};
+
+}
 #endif //NODE_NTPL_MODULE
