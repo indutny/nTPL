@@ -6,6 +6,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#include <nTPL.mod.h>
+
 struct Replacements_;
 struct Position_;
 
@@ -19,6 +21,7 @@ static Local<String> callModificator( Position* pos, Local<Object> modificators 
 static void pushVariable( Position* pos, Replacements* replace);
 
 bool parseValidateArgs(const Arguments& args);
+
 Handle<Value> parse(const Arguments& args);
 
 #endif //NODE_NTPL_MODULE

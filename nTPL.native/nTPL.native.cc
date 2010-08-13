@@ -9,7 +9,10 @@
 #include <stdlib.h> // malloc
 #include <string.h> // strlen
 
+#include <nTPL.mod.h>
+
 using namespace v8;
+using namespace nTPL;
 
 static Persistent<String> REPLACEMENTS_SYMBOL;
 static Persistent<String> REPLVARS_SYMBOL;
@@ -191,6 +194,9 @@ bool parseValidateArgs(const Arguments& args)
 	return true;
 }
 
+#define PARSER_OP(offset, char) (pos->input[pos->current+offset] == char)
+#define PARSER_MOVE(offset) pos->last=(pos->current+=offset)
+
 Handle<Value> parse(const Arguments& args)
 {
 	HandleScope scope;
@@ -203,7 +209,7 @@ Handle<Value> parse(const Arguments& args)
 	// Parse arguments
 	String::Utf8Value inputData(args[0]->ToString());
 	Local<Object> modificators = Local<Object>::Cast(args[1]);
-		
+	
 	// Prepare parser vars
 	Replacements* replace = new_replacements();
 	replace->replacements = Array::New();
@@ -218,11 +224,9 @@ Handle<Value> parse(const Arguments& args)
 	
 	while( pos->input[pos->current] )
 	{	
-		char current = pos->input[pos->current];
-		char next = pos->input[pos->current+1];
-		
+
 		// Open code-braces {% ... %}
-		if (state == STAND_BY && current == '{' && next == '%')
+		if (state == STAND_BY && PARSER_OP(0, '{') && PARSER_OP(1, '%'))
 		{	
 			
 			// Push all that was before
@@ -230,22 +234,22 @@ Handle<Value> parse(const Arguments& args)
 			
 			// Change state & pos
 			state = BRACES_MODIFICATOR;
-			pos->last = (pos->current+= 2);
+			PARSER_MOVE(2);
 			
 		}
 		// Catch modificator {%modificator ... %}
-		else if (state == BRACES_MODIFICATOR && current == ' ')
+		else if (state == BRACES_MODIFICATOR && PARSER_OP(0, ' '))
 		{
 			// Get modificator
 			pos->modificator = getInputSymbolPart(pos);
 	
 			// Change state & pos
 			state = BRACES;
-			pos->last = pos->current;
+			PARSER_MOVE(0);
 		}
 		// Close code-braces 
 		else if ((state == BRACES || state == BRACES_MODIFICATOR)
-		 && current == '%' && next == '}')
+		  && PARSER_OP(0,'%') && PARSER_OP(1,'}'))
 		{
 			// Case: {%modificator_name%}
 			// State will be BRACES_MODIFICATOR
@@ -254,7 +258,7 @@ Handle<Value> parse(const Arguments& args)
 			
 				// Get modificator && changes pos
 				pos->modificator = getInputSymbolPart(pos);
-				pos->last = pos->current;
+				PARSER_MOVE(0);
 			}			
 			Local<String> code_piece = callModificator(pos, modificators);
 			
@@ -264,46 +268,25 @@ Handle<Value> parse(const Arguments& args)
 			
 			// Change state & pos
 			state = STAND_BY;
-			pos->last = (pos->current+= 2);
+			PARSER_MOVE(2);
 			
 		}		
 		// Open comment braces {* ... *}
-		else if (state == STAND_BY && current == '{' && next == '*')
+		else if (state == STAND_BY && PARSER_OP(0,'{') && PARSER_OP(1,'*'))
 		{
 			// Push all that was before
 			pushVariable(pos, replace);
 			
 			// Change state & pos
 			state = COMMENT_BRACES;
-			pos->last = (pos->current+= 2);
+			PARSER_MOVE(2);
 		}
 		// Close comment braces
-		else if (state == COMMENT_BRACES && current == '*' && next == '}')
+		else if (state == COMMENT_BRACES && PARSER_OP(0,'*') && PARSER_OP(1,'}'))
 		{
 			// Change state & pos
 			state = STAND_BY;
-			pos->last = (pos->current+= 2);
-		}
-		// Open options braces {&option_name=a,b,c,d&}
-		else if (state == STAND_BY && current == '{' && next == '&')
-		{
-			// Push all that was before
-			pushVariable(pos, replace);
-			
-			// Change state & pos
-			state = OPTIONS_BRACES;
-			pos->last = (pos->current+= 2);
-		}
-		// Close options braces
-		else if (state == OPTIONS_BRACES && current == '}')
-		{
-			// To-do parse options
-			// ...
-			// ...
-			
-			// Change state & pos
-			state = STAND_BY;
-			pos->last = (pos->current+= 2);
+			PARSER_MOVE(2);
 		}
 		// Skip symbols
 		else
@@ -331,13 +314,18 @@ Handle<Value> parse(const Arguments& args)
 	return scope.Close(result);	
 }
 
+#define EXPOSE_FUNC(label, func) target->Set(String::NewSymbol(label), FunctionTemplate::New(func)->GetFunction())
+#define PERS_LABEL(label) Persistent<String>::New(String::NewSymbol(label));
+
 extern "C" void init (Handle<Object> target)
 {
 	HandleScope scope;
 	
-	REPLACEMENTS_SYMBOL = Persistent<String>::New(String::NewSymbol("replacements"));
-	REPLVARS_SYMBOL = Persistent<String>::New(String::NewSymbol("replVars"));
-	CODE_SYMBOL = Persistent<String>::New(String::NewSymbol("code"));
+	REPLACEMENTS_SYMBOL = PERS_LABEL("replacements");
+	REPLVARS_SYMBOL = PERS_LABEL("replVars");
+	CODE_SYMBOL = PERS_LABEL("code");
 	
-	target->Set(String::New("parse"), FunctionTemplate::New(parse)->GetFunction());
+	EXPOSE_FUNC("init",addNativeModificators);
+	
+	EXPOSE_FUNC("parse",parse);
 }
