@@ -335,6 +335,7 @@ namespace nTPL {
 		HandleScope scope;
 		
 		REPLACEMENTS_SYMBOL = PERS_LABEL("replacements");
+		CODE_SYMBOL = PERS_LABEL("code");
 		REPLVARS_SYMBOL = PERS_LABEL("replVars");
 		ARGS_SYMBOL = PERS_LABEL("args");
 		OPTIONS_SYMBOL = PERS_LABEL("options");
