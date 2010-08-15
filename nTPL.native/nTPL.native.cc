@@ -200,6 +200,7 @@ namespace nTPL {
 	}
 
 	#define PARSER_OP(offset, char) (pos->input[pos->current+offset] == char)
+	#define PARSER_OP2(tok) (pos->input[pos->current] == tok[0] && pos->input[pos->current+1] == tok[1])
 	#define PARSER_MOVE(offset) pos->last=(pos->current+=offset)
 	#define PARSER_OP_SPACES(offset) (PARSER_OP(0,' ') || PARSER_OP(0,'\t'))
 	Handle<Value> parse(const Arguments& args)
@@ -238,7 +239,7 @@ namespace nTPL {
 		{	
 
 			// Open code-braces {% ... %}
-			if (state == STAND_BY && PARSER_OP(0, '{') && PARSER_OP(1, '%'))
+			if (state == STAND_BY && PARSER_OP2("{%"))
 			{	
 				
 				// Push all that was before
@@ -261,7 +262,7 @@ namespace nTPL {
 			}
 			// Close code-braces 
 			else if ((state == BRACES || state == BRACES_MODIFICATOR)
-			  && PARSER_OP(0,'%') && PARSER_OP(1,'}'))
+					 && PARSER_OP2("%}"))
 			{
 				// Case: {%modificator_name%}
 				// State will be BRACES_MODIFICATOR
@@ -284,7 +285,7 @@ namespace nTPL {
 				
 			}		
 			// Open comment braces {* ... *}
-			else if (state == STAND_BY && PARSER_OP(0,'{') && PARSER_OP(1,'*'))
+			else if (state == STAND_BY && PARSER_OP2("{*"))
 			{
 				// Push all that was before
 				pushVariable(pos, replace);
@@ -294,7 +295,7 @@ namespace nTPL {
 				PARSER_MOVE(2);
 			}
 			// Close comment braces
-			else if (state == COMMENT_BRACES && PARSER_OP(0,'*') && PARSER_OP(1,'}'))
+			else if (state == COMMENT_BRACES && PARSER_OP2("*}"))
 			{
 				// Change state & pos
 				state = STAND_BY;
@@ -327,6 +328,7 @@ namespace nTPL {
 		return scope.Close(result);	
 	}
 	#undef PARSER_OP
+	#undef PARSER_OP2
 	#undef PARSER_MOVE
 	#undef PARSER_OP_SPACES
 	

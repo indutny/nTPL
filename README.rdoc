@@ -114,3 +114,24 @@ or if it dies "Permission Denied" or EACCESS error
 	});
 	nTPL("{%extends 'block-test', {message: "How do you do?"}%}{%block 'username'%}Admin{%/block%}")();
 	// >> Hello, Admin!How do you do?
+
+==Set modificators
+	
+Use "set" modificator to setup options inside template
+
+===Examples:
+"set.html"
+	{%set name first template %}
+	{%set args a1, a2, a3 %}
+	{%= a1 %}
+	{%= a2 %}
+	{%= a3 %}
+
+Template generated from this file will have 'first template' name and can get 'a1', 'a2', 'a3' as arguments
+
+	nTPL("set.html");
+	nTPL("first template")({a1:1,a2:2,a3:3});
+
+===More info:
+You can't setup any other options now. Only 'name' and 'args' are allowed.
+But if you generated template with "watch=true" and then change {%set ... %} in template - 'name' and 'args' will be refreshed!
