@@ -201,7 +201,7 @@ namespace nTPL {
 
 	#define PARSER_OP(offset, char) (pos->input[pos->current+offset] == char)
 	#define PARSER_MOVE(offset) pos->last=(pos->current+=offset)
-
+	#define PARSER_OP_SPACES(offset) (PARSER_OP(0,' ') || PARSER_OP(0,'\t'))
 	Handle<Value> parse(const Arguments& args)
 	{
 		HandleScope scope;
@@ -250,7 +250,7 @@ namespace nTPL {
 				
 			}
 			// Catch modificator {%modificator ... %}
-			else if (state == BRACES_MODIFICATOR && PARSER_OP(0, ' '))
+			else if (state == BRACES_MODIFICATOR && PARSER_OP_SPACES(0))
 			{
 				// Get modificator
 				pos->modificator = getInputSymbolPart(pos);
@@ -326,9 +326,12 @@ namespace nTPL {
 		
 		return scope.Close(result);	
 	}
+	#undef PARSER_OP
+	#undef PARSER_MOVE
+	#undef PARSER_OP_SPACES
 	
 	#define EXPOSE_FUNC(label, func) target->Set(String::NewSymbol(label), func)
-	#define PERS_LABEL(label) Persistent<String>::New(String::NewSymbol(label));
+	#define PERS_LABEL(label) Persistent<String>::New(String::NewSymbol(label))
 
 	extern "C" void init (Handle<Object> target)
 	{
@@ -346,5 +349,7 @@ namespace nTPL {
 		
 		EXPOSE_FUNC("parse",FunctionTemplate::New(parse)->GetFunction());
 	}
+	#undef EXPOSE_FUNC
+	#undef PERS_LABEL
 
 }
