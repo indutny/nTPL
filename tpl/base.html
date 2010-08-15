@@ -1,12 +1,19 @@
 {%set name base %}
 <!DOCTYPE html><html>
 <head>
-<title>{%block 'title' %}default{%/block %}</title>
-{%block 'head' %}{%/block %}
+<title>
+{%block 'title' %}
+	default
+{%/block %}
+</title>
+{%block 'head' %}
+{%/block %}
 </head>
 <body>
 	<div id="main">
-		{%block 'content' %}Hello!{%/block %}
+		{%block 'content' %}
+			Hello!
+		{%/block %}
 	</div>
 </body>
 </html>

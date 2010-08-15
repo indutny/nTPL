@@ -8,8 +8,13 @@ this.run = function(test, nTPL, callback) {
 		a1: 1,
 		a2: 2
 	});
+	var b = nTPL("express.js");
+	b = b({
+		a1: 1,
+		a2: 2
+	});
 	nTPL.unwatch();
 	
 	test.equal(a, "1:2");
-	
+	test.equal(a, b);
 }
