@@ -10,7 +10,6 @@ install:
 	@echo "Installing..."
 	@mkdir -p $(LIB_PREFIX)
 	@cp -fr lib/* $(LIB_PREFIX)/
-	@chmod 775 $(LIB_PREFIX)/*
 	
 uninstall:
 	@echo "Uninstalling ..."
