@@ -123,14 +123,17 @@ Use "set" modificator to setup options inside template
 "set.html"
 	{%set name first template %}
 	{%set args a1, a2, a3 %}
+	{%set some 123 %}
+	{%set foo.bar 1,2,3 %}
 	{%= a1 %}
 	{%= a2 %}
 	{%= a3 %}
 
 Template generated from this file will have 'first template' name and can get 'a1', 'a2', 'a3' as arguments
 
-	nTPL("set.html");
+	var tpl = nTPL("set.html");
 	nTPL("first template")({a1:1,a2:2,a3:3});
+	tpl.options; // {name: "first template", args: ["a1", "a2", "a3"], some: "123", foo : { bar: ["1","2","3"] } }
 
 ===More info:
 You can't setup any other options now. Only 'name' and 'args' are allowed.

@@ -26,6 +26,8 @@ clean:
 	@echo "Cleaning directory"
 	@rm -rf build/
 	
-all : uninstall clean build install test
+all : uninstall clean build install
+
+dev : uninstall clean build install test
 	
 .PHONY : build install uninstall test

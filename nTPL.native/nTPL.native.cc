@@ -1,6 +1,6 @@
 /*
 * Part of nTPL
-* nTPL.native v.0.2.1
+* nTPL.native v.0.3.0
 * Copyright 2010, Fedor Indutny
 * Released under MIT license
 */
