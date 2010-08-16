@@ -20,7 +20,6 @@ namespace nTPL {
 	static Persistent<String> REPLACEMENTS_SYMBOL;
 	static Persistent<String> REPLVARS_SYMBOL;
 	static Persistent<String> CODE_SYMBOL;
-	static Persistent<String> ARGS_SYMBOL;
 	static Persistent<String> OPTIONS_SYMBOL;
 
 	// Parser states
@@ -187,10 +186,12 @@ namespace nTPL {
 		// * Input string
 		// * Modificators object
 		// * Namespace object
+		// * Options object
 		if ((args.Length() < 3) ||
 			(!args[0]->IsString()) ||
 			(!args[1]->IsObject()) ||
-			(!args[2]->IsObject()) )
+			(!args[2]->IsObject()) ||
+			(!args[3]->IsObject()))
 		{
 			return false;
 		}
@@ -229,8 +230,7 @@ namespace nTPL {
 		pos->namespace_ = Local<Object>::Cast(args[2]);
 		
 		// Create options object
-		pos->options = Object::New();
-		pos->options->Set(ARGS_SYMBOL, Array::New());
+		pos->options = Local<Object>::Cast(args[3]);
 		
 		PARSER_STATE state = STAND_BY;		
 		
@@ -318,7 +318,6 @@ namespace nTPL {
 		result->Set( REPLACEMENTS_SYMBOL, replace->replacements );
 		result->Set( REPLVARS_SYMBOL, replace->replVars );
 		result->Set( CODE_SYMBOL, pos->code );
-		result->Set( OPTIONS_SYMBOL, pos->options );
 		
 		// Avoid memory leaks
 		delete replace;
@@ -341,8 +340,6 @@ namespace nTPL {
 		REPLACEMENTS_SYMBOL = PERS_LABEL("replacements");
 		CODE_SYMBOL = PERS_LABEL("code");
 		REPLVARS_SYMBOL = PERS_LABEL("replVars");
-		ARGS_SYMBOL = PERS_LABEL("args");
-		OPTIONS_SYMBOL = PERS_LABEL("options");
 		
 		#ifdef NODE_NTPL_MODIFICATORS_MODULE
 		mod::init(target);
