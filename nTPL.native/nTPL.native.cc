@@ -1,12 +1,11 @@
 /*
 * Part of nTPL
-* nTPL.native v.0.2.0
+* nTPL.native v.0.2.1
 * Copyright 2010, Fedor Indutny
 * Released under MIT license
 */
 #include <v8.h>
 #include <stdio.h>  // sprintf
-#include <stdlib.h> // malloc
 #include <string.h> // strlen
 
 #include "nTPL.mod.h"
@@ -61,7 +60,7 @@ namespace nTPL {
 
 	static inline Replacements* new_replacements()
 	{
-		Replacements* result = (Replacements*) malloc(sizeof(Replacements));
+		Replacements* result = new Replacements;
 		
 		result->replacements_count = 0;
 		
@@ -70,7 +69,7 @@ namespace nTPL {
 
 	static inline Position* new_position(unsigned char* input)
 	{
-		Position* result = (Position*) malloc(sizeof(Position));
+		Position* result = new Position;
 		
 		result->current = 0;
 		result->last = 0;
@@ -322,8 +321,8 @@ namespace nTPL {
 		result->Set( OPTIONS_SYMBOL, pos->options );
 		
 		// Avoid memory leaks
-		free(replace);
-		free(pos);
+		delete replace;
+		delete pos;
 		
 		return scope.Close(result);	
 	}
