@@ -1,6 +1,6 @@
 ==nTPL project: simple, fast and powerfull templates for node.js (http://github.com/donnerjack13589/nTPL).
 It's easy to learn - start now!
-Now comes with support of *Express.js*!
+Now comes with support of <b>Express.js</b>!
 
 ==It's fast:
 Mustache saids that running complex.html example gives following results:
