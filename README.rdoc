@@ -33,6 +33,7 @@ or if it dies "Permission Denied" or EACCESS error
 	make test
 
 ==Basic examples:
+	var nTPL = require("nTPL").plugins("nTPL.block", "nTPL.filter").nTPL;
 	
 	nTPL("1 + 1 = {%= 1+1 %}")();
 	nTPL({
