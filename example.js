@@ -1,4 +1,4 @@
-require("nTPL");
+var nTPL = require("nTPL").plugins('nTPL.block', 'nTPL.filter').nTPL;
 require("nTPL.block");
 require("nTPL.filter");
 

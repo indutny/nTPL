@@ -29,8 +29,7 @@ or if it dies "Permission Denied" or EACCESS error
 ==Advanced installation instructions:	
 	git clone git@github.com:donnerjack13589/nTPL.git
 	cd nTPL
-	make
-	make install
+	make all
 	make test
 
 ==Basic examples:
@@ -106,7 +105,7 @@ or if it dies "Permission Denied" or EACCESS error
 		
 ==Block module
 
-	require("nTPL.block");
+	var nTPL = require("nTPL").plugins("nTPL.block").nTPL;
 	
 	nTPL({
 		template: "Hello, {%block 'username'%}{%/block%}!{%= message %}",
