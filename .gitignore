@@ -2,4 +2,4 @@
 build
 build/*
 .lock-wscript
-lib/nTPL.native.node
+lib/nTPL/nTPL.native.node
