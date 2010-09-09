@@ -9,7 +9,7 @@ build:
 install:
 	@echo "Installing..."
 	@mkdir -p $(LIB_PREFIX)
-	@cp -fr lib/* $(LIB_PREFIX)/
+	@cp -fr lib/nTPL/* $(LIB_PREFIX)/
 	
 uninstall:
 	@echo "Uninstalling ..."

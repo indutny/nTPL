@@ -7,11 +7,16 @@
   "contributors"  : [
 	{name: "Fedor Indutny", email: "fedor.indutny@gmail.com"}
   ],
-  
-  "version"       : "0.4.4",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/donnerjack13589/nTPL.git"
+  },  
+  "version"       : "0.4.5",
   "engines"       : { "node": ">=0.1.103" },
+  "directories": {
+    "lib": "./lib/nTPL"
+  },
   "scripts" :{
-	"preinstall" : "make all",
-	"preuninstall" : "make uninstall"
+    "preinstall" : "make build"
   }
 }
