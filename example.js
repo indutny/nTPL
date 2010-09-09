@@ -1,6 +1,4 @@
 var nTPL = require("nTPL").plugins('nTPL.block', 'nTPL.filter').nTPL;
-require("nTPL.block");
-require("nTPL.filter");
 
 var base = nTPL("./tpl/base.html");
 	
