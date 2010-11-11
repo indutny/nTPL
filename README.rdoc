@@ -7,7 +7,7 @@ Mustache saids that running complex.html example gives following results:
 	Mu -  40 secs  (benchmarks/million_complex.js)
 
 On my PC - running nTPL's:
-	nTPL - 2 secs (benchmarks/million_complex.js)
+	nTPL - 6 secs (benchmarks/million_complex.js)
 
 Feel the difference?
 

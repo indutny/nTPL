@@ -15,8 +15,10 @@ var start = +new Date, t =0;
 for (var i=1; i<1E8;i++) {
 	t = 10 * 20 * 30;
 }
+
 q = (+new Date - start);
 console.log("q=" + q);
+
 for (var i = 1, len = tests.length; i<len;i++) {
 	start = +new Date;
 	tests[i].run(nTPL);

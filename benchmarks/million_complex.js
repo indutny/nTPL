@@ -1,7 +1,7 @@
 var nTPL = require("nTPL").nTPL;
 
 var tpl = nTPL({
-	template: "./complex.html",
+	template: "./million_complex.html",
 	args: ["header", "list"]
 });
 
