@@ -1,8 +1,14 @@
 var nTPL = require("nTPL").plugins('nTPL.block', 'nTPL.filter').nTPL;
 
-var base = nTPL("./tpl/base.html");
+var base = nTPL({
+  template: "./tpl/base.html",
+  watch: true
+});
 	
-var home = nTPL("./tpl/index.html");
+var home = nTPL({
+  template: "./tpl/index.html",
+  watch: true
+});
 	
 var http = require('http');
 
