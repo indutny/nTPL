@@ -1,5 +1,5 @@
 this.name = "Simple inline";
-this.run = function(test, nTPL) {
-	var a = nTPL("test")();
+this.run = function(test, ntpl) {
+	var a = ntpl("test")();
 	test.equal("test", a);
 }

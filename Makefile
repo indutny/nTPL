@@ -9,14 +9,14 @@ build:
 install:
 	@echo "Installing..."
 	@mkdir -p $(LIB_PREFIX)
-	@cp -fr lib/nTPL/* $(LIB_PREFIX)/
+	@cp -fr lib/ntpl/* $(LIB_PREFIX)/
 	
 uninstall:
 	@echo "Uninstalling ..."
-	@rm -f $(LIB_PREFIX)/nTPL.js
-	@rm -f $(LIB_PREFIX)/nTPL.native.node
-	@rm -f $(LIB_PREFIX)/nTPL.block.js
-	@rm -f $(LIB_PREFIX)/nTPL.filter.js
+	@rm -f $(LIB_PREFIX)/ntpl.js
+	@rm -f $(LIB_PREFIX)/ntpl.native.node
+	@rm -f $(LIB_PREFIX)/ntpl.block.js
+	@rm -f $(LIB_PREFIX)/ntpl.filter.js
 	
 test:
 	@echo "Testing..."

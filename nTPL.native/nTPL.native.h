@@ -6,9 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "nTPL_mod.h"
+#include "ntpl_mod.h"
 
-namespace nTPL {
+namespace ntpl {
 
 	struct Replacements_;
 	struct Position_;

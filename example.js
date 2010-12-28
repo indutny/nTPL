@@ -1,11 +1,11 @@
-var nTPL = require("nTPL").plugins('nTPL.block', 'nTPL.filter').nTPL;
+var ntpl = require("ntpl").plugins('ntpl.block', 'ntpl.filter').ntpl;
 
-var base = nTPL({
+var base = ntpl({
   template: "./tpl/base.html",
   watch: true
 });
 	
-var home = nTPL({
+var home = ntpl({
   template: "./tpl/index.html",
   watch: true
 });

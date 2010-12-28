@@ -1,8 +1,8 @@
 this.name = "Native parser: modificator tabs & spaces";
-this.run = function(test, nTPL, callback) {
+this.run = function(test, ntpl, callback) {
 	
-	var a = nTPL("{%set	 	 name test33%}123")();
-	var b = nTPL("test33")();
+	var a = ntpl("{%set	 	 name test33%}123")();
+	var b = ntpl("test33")();
 	
 	test.equal(a, b);	
 	

@@ -1,11 +1,11 @@
 this.name = "Parser test";
-this.run = function(test, nTPL) {
-	nTPL.modificators["parser-test1"] = "$p(123,$_);";
-	nTPL.modificators["parser-test2"] = function (str, namespace) {
+this.run = function(test, ntpl) {
+	ntpl.modificators["parser-test1"] = "$p(123,$_);";
+	ntpl.modificators["parser-test2"] = function (str, namespace) {
 		return "$p('~" + str + namespace + "!',$_);";
 	};
 	
-	var a = nTPL({
+	var a = ntpl({
 		template: "{%parser-test1%}{%parser-test1 %}{%parser-test2%}{%parser-test2 123%}"
 	})();
 

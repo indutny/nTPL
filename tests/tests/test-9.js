@@ -1,6 +1,6 @@
 this.name = "Many Arguments and using it";
-this.run = function(test, nTPL) {
-	var a = nTPL({
+this.run = function(test, ntpl) {
+	var a = ntpl({
 		template: "1-{%= a1 %}-2-{%= a2 %}-3-{%= a3 %}-4-{%= a4 %}",
 		args: ["a1","a2","a3","a4"]
 	})({

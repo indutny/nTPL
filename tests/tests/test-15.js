@@ -1,13 +1,13 @@
 this.name = "Template naming test";
-this.run = function(test, nTPL) {
-	nTPL({
+this.run = function(test, ntpl) {
+	ntpl({
 		template: "123{%= a %}",
 		name : "a"
 	});
-	nTPL({
+	ntpl({
 		template: "123{%= a %}",
 		name : "a",
 		args: ["a"]
 	});
-	test.equal("1234", nTPL("a")({a: 4}));
+	test.equal("1234", ntpl("a")({a: 4}));
 }

@@ -1,13 +1,13 @@
 this.name = "Block module: 'extends' with arguments";
-this.run = function(test, nTPL, callback) {
+this.run = function(test, ntpl, callback) {
 
-	var a = nTPL({
+	var a = ntpl({
 		template: "{%= a %}",
 		args: ["a"],
 		name: "a"
 	});
 	
-	var b = nTPL({
+	var b = ntpl({
 		template: "{%extends 'a', {a: 'test'} %}"
 	})();
 	

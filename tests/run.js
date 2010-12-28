@@ -2,7 +2,7 @@ var fs = require("fs");
 var path = require("path");
 var test = require("assert");
 
-var nTPL = require("nTPL").plugins('nTPL.block', 'nTPL.filter').nTPL;
+var ntpl = require("ntpl").plugins('ntpl.block', 'ntpl.filter').ntpl;
 
 var tests = [];
 
@@ -50,7 +50,7 @@ function next() {
 	
 	var async = false;
 	try {
-		if (async = tests[i].run(test, nTPL, testPass)) {
+		if (async = tests[i].run(test, ntpl, testPass)) {
 						
 		} else {
 			

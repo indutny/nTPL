@@ -1,5 +1,5 @@
 this.name = "Async working";
-this.run = function(test, nTPL, callback) {
+this.run = function(test, ntpl, callback) {
 	
 	setTimeout(function(){
 		callback();

@@ -1,6 +1,6 @@
 /*
-* Part of nTPL
-* nTPL.native v.0.3.0
+* Part of ntpl
+* ntpl.native v.0.3.0
 * Copyright 2010, Fedor Indutny
 * Released under MIT license
 */
@@ -8,14 +8,14 @@
 #include <stdio.h>  // sprintf
 #include <string.h> // strlen
 
-#include "nTPL.mod.h"
+#include "ntpl.mod.h"
 
 using namespace v8;
 #ifdef NODE_NTPL_MODIFICATORS_MODULE
-using namespace nTPL;
+using namespace ntpl;
 #endif //NODE_NTPL_MODIFICATORS_MODULE
 
-namespace nTPL {
+namespace ntpl {
 
 	static Persistent<String> REPLACEMENTS_SYMBOL;
 	static Persistent<String> REPLVARS_SYMBOL;

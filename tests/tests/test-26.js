@@ -1,7 +1,7 @@
 this.name = "Parser: UTF16";
-this.run = function(test, nTPL, callback) {
+this.run = function(test, ntpl, callback) {
 	
-	var a = nTPL("абвгд{%= 'еёжз'%}")();
+	var a = ntpl("абвгд{%= 'еёжз'%}")();
 	
 	test.equal(a, "абвгдеёжз");	
 	

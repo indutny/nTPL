@@ -1,6 +1,6 @@
-var nTPL = require("nTPL").nTPL;
+var ntpl = require("ntpl").ntpl;
 
-var tpl = nTPL({
+var tpl = ntpl({
 	template: "./million_complex.html",
 	args: ["header", "list"]
 });

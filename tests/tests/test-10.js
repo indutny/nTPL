@@ -1,6 +1,6 @@
 this.name = "Each modificator";
-this.run = function(test, nTPL) {
-	var a = nTPL({
+this.run = function(test, ntpl) {
+	var a = ntpl({
 		template: "{%each a %}-{%= this %}={%= $i %}-{%/each%}",
 		args: ["a"]
 	})({

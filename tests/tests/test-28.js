@@ -1,7 +1,7 @@
 this.name = "Native mod: set options / one";
-this.run = function(test, nTPL, callback) {
+this.run = function(test, ntpl, callback) {
 	
-	var a = nTPL("{%set args hello %}{%= hello %}")({hello: "Hello world!"});
+	var a = ntpl("{%set args hello %}{%= hello %}")({hello: "Hello world!"});
 	
 	test.equal(a, "Hello world!");	
 	

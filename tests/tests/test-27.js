@@ -1,8 +1,8 @@
 this.name = "Native mod: set name";
-this.run = function(test, nTPL, callback) {
+this.run = function(test, ntpl, callback) {
 	
-	var a = nTPL("{%set name test %}123")();
-	var b = nTPL("test")();
+	var a = ntpl("{%set name test %}123")();
+	var b = ntpl("test")();
 	
 	test.equal(a, b);	
 	

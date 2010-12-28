@@ -1,4 +1,4 @@
-==nTPL project: simple, fast and powerfull templates for node.js (http://github.com/donnerjack13589/nTPL).
+==ntpl project: simple, fast and powerfull templates for node.js (http://github.com/donnerjack13589/ntpl).
 It's easy to learn - start now!
 Now comes with support of <b>Express.js</b>!
 
@@ -6,76 +6,76 @@ Now comes with support of <b>Express.js</b>!
 Mustache saids that running complex.html example gives following results:
 	Mu -  40 secs  (benchmarks/million_complex.js)
 
-On my PC - running nTPL's:
-	nTPL - 6 secs (benchmarks/million_complex.js)
+On my PC - running ntpl's:
+	ntpl - 6 secs (benchmarks/million_complex.js)
 
 Feel the difference?
 
 ==Some features:
-* nTPL have native parser written on C++, so templates are compiled very fast.
-* nTPL have many optimizations in template rendering process.
-* nTPL uses buffers
-* nTPL is extendable (nTPL.modificators)
-* nTPL can reload template on file change (watch: true)
+* ntpl have native parser written on C++, so templates are compiled very fast.
+* ntpl have many optimizations in template rendering process.
+* ntpl uses buffers
+* ntpl is extendable (ntpl.modificators)
+* ntpl can reload template on file change (watch: true)
 
 ==Installation:
-	npm install nTPL
+	npm install ntpl
 
 ==Manual installation instructions:
-	curl http://github.com/donnerjack13589/nTPL/raw/master/install.sh | sh
+	curl http://github.com/donnerjack13589/ntpl/raw/master/install.sh | sh
 or if it dies "Permission Denied" or EACCESS error
-	curl http://github.com/donnerjack13589/nTPL/raw/master/install.sh | sudo sh
+	curl http://github.com/donnerjack13589/ntpl/raw/master/install.sh | sudo sh
 	
 ==Advanced installation instructions:	
-	git clone git@github.com:donnerjack13589/nTPL.git
-	cd nTPL
+	git clone git@github.com:donnerjack13589/ntpl.git
+	cd ntpl
 	make all
 	make test
 
 ==Basic examples:
-	var nTPL = require("nTPL").plugins("nTPL.block", "nTPL.filter").nTPL;
+	var ntpl = require("ntpl").plugins("ntpl.block", "ntpl.filter").ntpl;
 	
-	nTPL("1 + 1 = {%= 1+1 %}")();
-	nTPL({
+	ntpl("1 + 1 = {%= 1+1 %}")();
+	ntpl({
 		template : "1 + 1 = {%= 1+1 %}"
 	})();
-	nTPL("filename.tpl")();
+	ntpl("filename.tpl")();
 	// 1 + 1 = 2
 	
-	nTPL({
+	ntpl({
 		template : "Hello {%= a %}!",
 		args: ["a"]
 	})({a: 'World'});
 	// >> Hello World!
 	
-	nTPL({
+	ntpl({
 		template: "Hello {%each a%}{%= this %}, {%/each%}world!",
 		args: ["a"]
 	})({a: ['Andy','Alex']});
 	// >>  Hello Andy, Alex, World!
 	
-	nTPL({
+	ntpl({
 		template: "{%if godmode%}My Lord!{%else%}Who are you?{%/if%}",
 		args: ["godmode"]
 	})({godmode: true});
 	// >> My Lord!
 	
-	var $ = require("nTPL");
+	var $ = require("ntpl");
 	$.parse("It also works!")();
 	// >> It also works!
 	
 ==Medium examples:
 	
-	nTPL("foo {* text here won't be compiled or printed *} bar")();
+	ntpl("foo {* text here won't be compiled or printed *} bar")();
 	// >> foo  bar
 	
-	nTPL("{%each [1,2,3] %} "{%= this %}" {%/each%}?")();
+	ntpl("{%each [1,2,3] %} "{%= this %}" {%/each%}?")();
 	// >> "1" "2" "3" 
 	
-	nTPL("{%catch var a %}What's up, dude?{%/catch%}{%= a.substr(0,9) %}?")();
+	ntpl("{%catch var a %}What's up, dude?{%/catch%}{%= a.substr(0,9) %}?")();
 	// >> What's up?
 	
-	nTPL({
+	ntpl({
 		template: "filename.tpl",
 		callback: function (tpl) {
 			console.log(tpl());
@@ -85,15 +85,15 @@ or if it dies "Permission Denied" or EACCESS error
 	
 ==Harder examples:
 		
-	nTPL({
+	ntpl({
 		template: "<button>{%= value%}</button>",
 		args: ["value"],
 		name: "input"
 	});
-	nTPL("input")({value:'Hello world!'});
+	ntpl("input")({value:'Hello world!'});
 	// >> Button with text "Hello world!"
 	
-	nTPL({
+	ntpl({
 		template: "filename.tpl",
 		callback: function (tpl) {
 			console.log(tpl());
@@ -106,14 +106,14 @@ or if it dies "Permission Denied" or EACCESS error
 		
 ==Block module
 
-	var nTPL = require("nTPL").plugins("nTPL.block").nTPL;
+	var ntpl = require("ntpl").plugins("ntpl.block").ntpl;
 	
-	nTPL({
+	ntpl({
 		template: "Hello, {%block 'username'%}{%/block%}!{%= message %}",
 		args: ["message"],
 		name: "block-test"
 	});
-	nTPL("{%extends 'block-test', {message: "How do you do?"}%}{%block 'username'%}Admin{%/block%}")();
+	ntpl("{%extends 'block-test', {message: "How do you do?"}%}{%block 'username'%}Admin{%/block%}")();
 	// >> Hello, Admin!How do you do?
 
 ==Set modificators
@@ -132,8 +132,8 @@ Use "set" modificator to setup options inside template
 
 Template generated from this file will have 'first template' name and can get 'a1', 'a2', 'a3' as arguments
 
-	var tpl = nTPL("set.html");
-	nTPL("first template")({a1:1,a2:2,a3:3});
+	var tpl = ntpl("set.html");
+	ntpl("first template")({a1:1,a2:2,a3:3});
 	tpl.options; // {name: "first template", args: ["a1", "a2", "a3"], some: "123", foo : { bar: ["1","2","3"] } }
 
 ===More info:

@@ -1,15 +1,15 @@
 /*
-* Part of nTPL
-* nTPL.modificators v.0.1.0
+* Part of ntpl
+* ntpl.modificators v.0.1.0
 * Copyright 2010, Fedor Indutny
 * Released under MIT license
 */
-#include <nTPL.mod.h>
+#include <ntpl.mod.h>
 #include <v8.h>
 #include <stdio.h>
 
 
-namespace nTPL {
+namespace ntpl {
 	namespace mod {
 		using namespace v8;
 
@@ -209,7 +209,7 @@ namespace nTPL {
 		
 		#define NEW_MODIFICATOR(name,func) modificators->Set( String::New(name), FunctionTemplate::New(func)->GetFunction() )
 		
-		// This function adds modificator to current nTPL instance
+		// This function adds modificator to current ntpl instance
 		Handle<Value> add(const Arguments& args)
 		{
 			HandleScope scope;

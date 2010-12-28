@@ -14,14 +14,14 @@ def configure(conf):
 	conf.check_tool('node_addon')
 
 def build(bld):
-	nTPL = bld.new_task_gen('cxx', 'shlib', 'node_addon')
-	nTPL.cxxflags = ["-g",]
-	nTPL.target = 'nTPL.native'
-	nTPL.source = bld.path.ant_glob('nTPL.native/*.cc')
-	nTPL.includes = 'nTPL.native/'
+	ntpl = bld.new_task_gen('cxx', 'shlib', 'node_addon')
+	ntpl.cxxflags = ["-g",]
+	ntpl.target = 'ntpl.native'
+	ntpl.source = bld.path.ant_glob('ntpl.native/*.cc')
+	ntpl.includes = 'ntpl.native/'
 	
 def shutdown():  
-    if exists('./lib/nTPL/nTPL.native.node'):
-      unlink('./lib/nTPL/nTPL.native.node');
-    if exists('./build/default/nTPL.native.node'):
-      copy('./build/default/nTPL.native.node', './lib/nTPL/nTPL.native.node')    
+    if exists('./lib/ntpl/ntpl.native.node'):
+      unlink('./lib/ntpl/ntpl.native.node');
+    if exists('./build/default/ntpl.native.node'):
+      copy('./build/default/ntpl.native.node', './lib/ntpl/ntpl.native.node')    

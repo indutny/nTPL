@@ -2,7 +2,7 @@ var fs = require("fs");
 var path = require("path");
 var test = require("assert");
 
-var nTPL = require("nTPL").plugins("nTPL.block", "nTPL.filter").nTPL;
+var ntpl = require("ntpl").plugins("ntpl.block", "ntpl.filter").ntpl;
 
 var tests = [];
 
@@ -21,7 +21,7 @@ console.log("q=" + q);
 
 for (var i = 1, len = tests.length; i<len;i++) {
 	start = +new Date;
-	tests[i].run(nTPL);
+	tests[i].run(ntpl);
 	total += +new Date - start;
 }
 	
